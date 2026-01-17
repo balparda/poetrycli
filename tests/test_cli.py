@@ -78,7 +78,7 @@ def _printed_value(console_mock: mock.Mock) -> object:
     (-5, 5, 10, 5),
   ],
 )
-@mock.patch('mycli.cli.secrets.randbelow')
+@mock.patch('mycli.core.example.secrets.randbelow')
 @mock.patch('mycli.cli.cli_logging.Console')
 def test_random_num_prints_expected_integer(
   console_factory_mock: mock.Mock,
@@ -121,7 +121,7 @@ def test_random_num_prints_expected_integer(
     (0, -1),
   ],
 )
-@mock.patch('mycli.cli.secrets.randbelow')
+@mock.patch('mycli.core.example.secrets.randbelow')
 @mock.patch('mycli.cli.cli_logging.Console')
 def test_random_num_rejects_invalid_range(
   console_factory_mock: mock.Mock,
@@ -164,7 +164,7 @@ def test_random_num_rejects_invalid_range(
     pytest.param(8, list('ABCDEFGH'), 'ABCDEFGH', id='A to H'),
   ],
 )
-@mock.patch('mycli.cli.secrets.choice')
+@mock.patch('mycli.core.example.secrets.choice')
 @mock.patch('mycli.cli.cli_logging.Console')
 def test_random_str_default_alphabet_prints_expected(
   console_factory_mock: mock.Mock,
@@ -207,7 +207,7 @@ def test_random_str_default_alphabet_prints_expected(
     ('01', 6, ['0', '1', '0', '1', '1', '0'], '010110'),
   ],
 )
-@mock.patch('mycli.cli.secrets.choice')
+@mock.patch('mycli.core.example.secrets.choice')
 @mock.patch('mycli.cli.cli_logging.Console')
 def test_random_str_custom_alphabet_is_used(
   console_factory_mock: mock.Mock,
@@ -246,7 +246,7 @@ def test_random_str_custom_alphabet_is_used(
     '-1',  # negative should be rejected
   ],
 )
-@mock.patch('mycli.cli.secrets.choice')
+@mock.patch('mycli.core.example.secrets.choice')
 @mock.patch('mycli.cli.cli_logging.Console')
 def test_random_str_rejects_non_positive_length(
   console_factory_mock: mock.Mock,

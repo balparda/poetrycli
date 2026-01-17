@@ -8,7 +8,7 @@ from pathlib import Path
 
 import platformdirs
 
-APP_NAME = 'mycli'
+APP_NAME = 'mycli'  # TODO: change this to your app name
 
 
 def GetConfigDir() -> Path:

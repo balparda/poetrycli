@@ -43,14 +43,14 @@ Notes
 from __future__ import annotations
 
 import logging
-import secrets
-import string
 
 import typer
 from rich import console as rich_console
 
-from . import __version__, config
-from . import logging as cli_logging
+from . import __version__
+from .core import example
+from .resources import config
+from .utils import logging as cli_logging
 
 # CLI app setup, this is an important object and can be imported elsewhere and called
 app = typer.Typer(add_completion=True, no_args_is_help=True)
@@ -77,7 +77,7 @@ def Main(
     raise typer.Exit(0)
   console: rich_console.Console = cli_logging.InitLogging(verbose)
   console.print('[bold blue]**********************************************[/]')
-  console.print(
+  console.print(  # TODO: change your intro lines to taste
     '[bold blue]**[/]                 [bold yellow]MYCLI[/]                    [bold blue]**[/]',
   )
   console.print('[bold blue]**   balparda@gmail.com (Daniel Balparda)   **[/]')
@@ -119,7 +119,7 @@ def RandomNum(
   if max_ < min_:
     raise typer.BadParameter(f'--max ({max_}) must be >= --min ({min_})')
   console: rich_console.Console = cli_logging.Console()
-  console.print(secrets.randbelow(max_ - min_ + 1) + min_)
+  console.print(example.RandomNum(min_, max_))
 
 
 @_random_app.command('str')
@@ -135,8 +135,7 @@ def RandomStr(
   # one way or another the args are well documented in the CLI help and in the code above
   """Generate a random string."""
   console: rich_console.Console = cli_logging.Console()
-  chars: str = alphabet or str(string.ascii_letters + string.digits)
-  console.print(''.join(secrets.choice(chars) for _ in range(length)))
+  console.print(example.RandomStr(length, alphabet))
 
 
 def Run() -> None:
