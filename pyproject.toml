@@ -110,6 +110,9 @@ ignore = [
   "N802",  # allow PascalCase in method names
   "E111",  # allow 2-space indentation
   "E114",  # allow 2-space indentation
+  "D211",  # no-blank-line-before-class b/c conflicts w/ incorrect-blank-line-before-class D203
+  "D213",  # multi-line-summary-second-line b/c conflicts w/ multi-line-summary-first-line D212
+  "COM812",  # missing-trailing-comma: may cause conflicts when used with the formatter
 
   "TC002",    # checks for third-party imports that are only used for type annotations
 
