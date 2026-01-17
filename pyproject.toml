@@ -50,16 +50,17 @@ packages = [{ include = "mycli", from = "src" }]  # TODO: rename `mycli` part
 [tool.poetry.dependencies]
 
 python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
-typer = { version = "^0.21", extras = ["all"] }
+
+rich = "^14.2"  # if this changes, also change: .pre-commit-config.yaml
+typer = {version = "^0.21", extras = ["all"]}  # if this changes, also change: .pre-commit-config.yaml
 platformdirs = "^4.5"
-rich = "^14.2"
 
 [tool.poetry.group.dev.dependencies]
 
-pytest = "^9.0"
+ruff = "~0.14.13"  # if this changes, also change: .pre-commit-config.yaml
+mypy = "~1.19.1"   # if this changes, also change: .pre-commit-config.yaml
+pytest = "^9.0"    # if this changes, also change: .pre-commit-config.yaml
 pytest-cov = "^7.0"
-ruff = "^0.14"
-mypy = "^1.19"
 pyright = "^1.1"
 pre-commit = "^4.5"
 
@@ -110,7 +111,6 @@ ignore = [
   "N802",  # allow PascalCase in method names
   "E111",  # allow 2-space indentation
   "E114",  # allow 2-space indentation
-#  "D211",  # no-blank-line-before-class b/c conflicts w/ incorrect-blank-line-before-class D203
   "D203",  # incorrect-blank-line-before-class: may cause conflicts when used with the formatter
   "D213",  # multi-line-summary-second-line b/c conflicts w/ multi-line-summary-first-line D212
   "COM812",  # missing-trailing-comma: may cause conflicts when used with the formatter

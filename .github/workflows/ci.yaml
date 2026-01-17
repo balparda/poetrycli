@@ -8,12 +8,15 @@ on:
   pull_request:
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ['3.12']
+
     steps:
+
       - uses: actions/checkout@v4
 
       - name: Set up Python
@@ -37,5 +40,5 @@ jobs:
       - name: Typecheck
         run: poetry run mypy src
 
-      - name: Tests
+      - name: Tests & Coverage
         run: poetry run pytest --cov=src --cov-report=term-missing

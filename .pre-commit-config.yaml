@@ -2,15 +2,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 repos:
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+    # Ruff version
+    rev: v0.14.13
     hooks:
-      - id: ruff
-        args: [--fix]
+      # Run the linter
+      - id: ruff-check
+      # Run the formatter
       - id: ruff-format
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+    # MyPI version
+    rev: v1.19.1
     hooks:
+      # Run the type checker
       - id: mypy
-        additional_dependencies: []
+        additional_dependencies: [pytest==9.0, rich==14.2, typer==0.21]
