@@ -182,3 +182,10 @@ exclude = [
 
 addopts = "-q"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = [
+  "*/__init__.py",  # keep these free of real code!
+  "*/__main__.py",
+  "*/template.py",
+]
