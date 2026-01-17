@@ -1,0 +1,97 @@
+// SPDX-FileCopyrightText: Copyright 2026 Daniel Balparda <balparda@github.com>
+// SPDX-License-Identifier: Apache-2.0
+
+{
+
+  // --- Python / Poetry interpreter ---
+  // Prefer an in-project venv: `poetry config virtualenvs.in-project true`
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+
+  // --- Pylance / type checking ---
+  // You can also (or instead) control this via [tool.pyright] in pyproject.toml.
+  "python.analysis.diagnosticsSource": "Pylance",
+  // "python.analysis.typeCheckingMode": "strict",  // not needed: pyptoject.toml
+  "python.analysis.languageServerMode": "full",
+  "pylint.enabled": false,
+  "flake8.enabled": false,
+
+  // --- Testing ---
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+
+  // --- Formatting + linting (Ruff) ---
+  // Old python.linting.* / pylint / flake8 settings are deprecated in VS Code.
+  // Use the Ruff extension and configure behavior via pyproject.toml.
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+
+    // Let Ruff do: autofix + import sorting via code actions.
+    // "explicit" prevents unexpected bulk changes on every save; you can switch to true if you prefer.
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  // Ensure Ruff uses the project's environment (important with Poetry).
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
+
+  // keep files tidy
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+
+  // cspell (custom dictionary)
+  "cSpell.words": [
+    "abstra",
+    "addopts",
+    "celerybeat",
+    "codz",
+    "Connor",
+    "cursorignore",
+    "cursorindexingignore",
+    "Cython",
+    "dmypy",
+    "envrc",
+    "footguns",
+    "htmlcov",
+    "ipynb",
+    "isort",
+    "marimo",
+    "mkdocs",
+    "mycli",
+    "mypy",
+    "nosetests",
+    "pipenv",
+    "Pipfile",
+    "platformdirs",
+    "pybuilder",
+    "pycache",
+    "pycodestyle",
+    "pydocstyle",
+    "pyenv",
+    "pyflakes",
+    "pyflow",
+    "pypa",
+    "pypackages",
+    "pypirc",
+    "pytype",
+    "pyupgrade",
+    "ropeproject",
+    "scrapy",
+    "sdist",
+    "Spyder",
+    "spyderproject",
+    "spyproject",
+    "testpaths",
+    "typer",
+    "webassets"
+  ]
+
+}
