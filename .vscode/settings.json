@@ -13,8 +13,18 @@
   "python.analysis.diagnosticsSource": "Pylance",
   // "python.analysis.typeCheckingMode": "strict",  // not needed: pyptoject.toml
   "python.analysis.languageServerMode": "full",
+  "python.analysis.supportDocstringTemplate": false,
   "pylint.enabled": false,
   "flake8.enabled": false,
+
+  // --- autoDocstring ---
+  // Use Google-style docstrings --- add "autoDocstring – Python Docstring Generator" extension.
+  "autoDocstring.docstringFormat": "google",
+  "autoDocstring.generateDocstringOnEnter": true,
+  "autoDocstring.includeExtendedSummary": true,
+  "autoDocstring.includeName": false,
+  "autoDocstring.guessTypes": true,
+  // "autoDocstring.quoteStyle": "tripleDouble",
 
   // --- Testing ---
   "python.testing.pytestEnabled": true,
@@ -51,6 +61,7 @@
   "cSpell.words": [
     "abstra",
     "addopts",
+    "autouse",
     "celerybeat",
     "codz",
     "Connor",
@@ -81,6 +92,7 @@
     "pypa",
     "pypackages",
     "pypirc",
+    "pytests",
     "pytype",
     "pyupgrade",
     "ropeproject",

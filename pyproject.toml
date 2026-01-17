@@ -52,8 +52,8 @@ packages = [{ include = "mycli", from = "src" }]  # TODO: rename `mycli` part
 python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
 typer = { version = "^0.21", extras = ["all"] }
 platformdirs = "^4.5"
+rich = "^14.2"
 
-####################################################################################################
 [tool.poetry.group.dev.dependencies]
 
 pytest = "^9.0"
@@ -63,7 +63,6 @@ mypy = "^1.19"
 pyright = "^1.1"
 pre-commit = "^4.5"
 
-####################################################################################################
 [tool.poetry.scripts]
 
 mycli = "mycli.cli:app"  # TODO: rename `mycli` part
@@ -108,13 +107,25 @@ select = [
 ]
 
 ignore = [
-  "N802",    # allow PascalCase in method names
-  "E111",    # allow 2-space indentation
-  "E114",    # allow 2-space indentation
+  "N802",  # allow PascalCase in method names
+  "E111",  # allow 2-space indentation
+  "E114",  # allow 2-space indentation
+
+  "TC002",    # checks for third-party imports that are only used for type annotations
+
+  "FBT003",   # allows boolean positional value in function call
+  "PLR0913",  # Too many arguments in function definition (N > 5)
+  "PLR0917",  # Too many positional arguments (N/5)
+
+  "TRY003",  # Avoid specifying long messages outside the exception class
+  "EM102",   # Exception must not use an f-string literal, assign to variable firs
+
   "TD002",   # allow TODOs without authors
   "TD003",   # allow TODOs without bugs
   "FIX002",  # fix the todos...  # TODO: remove this line: you usually want this
-  # "W504",  # allow line breaks after operators
+
+  "LOG015",  # allows for calls into top-level logging methods
+  "G004",    # allows logging statements to use f-string
 ]
 # ignore = [ "E125", "E129", "E501"]
 
