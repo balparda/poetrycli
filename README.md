@@ -15,11 +15,19 @@ The repo is intentionally opinionated because it was built to help the authors (
 
 <https://pypi.org/project/foobarnotreally/>
 
+***TODO:*** If you are starting a new project, there are lots of instructions and useful information in the *"[Appendix **I**: Using the `poetrycli` template](#appendix-i-using-the-poetrycli-template)"* sections.
+
+***TODO:*** change the title and this header to match your project's conditions.
+
 **Contents:**
 
 - [poetrycli — Python 3.12-14 Poetry CLI Template (Typer + Rich + Ruff + MyPy)](#poetrycli--python-312-14-poetry-cli-template-typer--rich--ruff--mypy)
   - [License](#license)
   - [Installation](#installation)
+  - [Context / Problem Space](#context--problem-space)
+  - [Design assumptions / Disclaimers](#design-assumptions--disclaimers)
+  - [CLI Interface](#cli-interface)
+  - [Project Design](#project-design)
   - [Development Instructions](#development-instructions)
     - [Development Setup](#development-setup)
       - [Install Poetry (recommended: `pipx`)](#install-poetry-recommended-pipx)
@@ -81,6 +89,23 @@ Known dependencies:
 - **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
 - **[platformdirs 4.5+](https://pypi.org/project/platformdirs/)** - Determines appropriate platform-specific dirs
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
+- ***TODO:*** add your main dependencies here too
+
+## Context / Problem Space
+
+***TODO:*** change this to match your project's conditions.
+
+## Design assumptions / Disclaimers
+
+***TODO:*** change this to match your project's conditions.
+
+## CLI Interface
+
+***TODO:*** change this to match your project's conditions.
+
+## Project Design
+
+***TODO:*** change this to match your project's conditions.
 
 ## Development Instructions
 
