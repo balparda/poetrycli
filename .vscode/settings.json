@@ -113,7 +113,8 @@
     "typer",
     "uvicorn",
     "webassets",
-    "yourcli"
+    "yourcli",
+    "yzhang"
   ]
 
 }
