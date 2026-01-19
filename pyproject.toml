@@ -102,6 +102,7 @@ pytest-flakefinder = "^1.1"
 pyright = "^1.1"
 pre-commit = "^4.5"
 pyinstrument = "^5.1"
+typeguard = "^4.4"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = "^1.10"
@@ -165,6 +166,7 @@ ignore = [
   "TD002",   # allow TODOs without authors
   "TD003",   # allow TODOs without bugs
   "FIX002",  # fix the todos...  # TODO: remove this line: you usually want this
+  "PGH003",  # allow ignoring type issues without giving extra codes
 
   "LOG015",  # allows for calls into top-level logging methods
   "G004",    # allows logging statements to use f-string
@@ -235,6 +237,10 @@ markers = [
   # mark python tests with decorator @pytest.mark.slow / @pytest.mark.<tag-name>
 
 ]
+
+typeguard-packages = [ "mycli", "scripts" ]  # TODO: rename `mycli` part
+typeguard-forward-ref-policy = "ERROR"
+typeguard-collection-check-strategy = "ALL_ITEMS"
 
 ####################################################################################################
 [tool.coverage.run]

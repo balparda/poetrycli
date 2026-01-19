@@ -7,10 +7,12 @@ from __future__ import annotations
 from unittest import mock
 
 import pytest
+import typeguard
 from click import testing as click_testing
 from typer import testing
 
 from mycli import cli
+from mycli.core import example
 
 _runner = testing.CliRunner()
 
@@ -240,6 +242,7 @@ def test_random_str_custom_alphabet_is_used(
   assert _printed_value(console) == expected
 
 
+# @typeguard.suppress_type_checks  # <-- example of suppressing typeguard checks
 @pytest.mark.parametrize(
   'bad_length',
   [
@@ -266,3 +269,6 @@ def test_random_str_rejects_non_positive_length(
   assert result.exit_code != 0
   choice_mock.assert_not_called()
   console_factory_mock.return_value.print.assert_not_called()
+  with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
+    # this method "works" but typeguard complains about int/float mix
+    assert example.RandomNum(1, 1.1) == 1  # type: ignore

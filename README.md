@@ -18,7 +18,7 @@
 - **Typer** for CLI structure (commands, options, subcommands, help)
 - **Rich** for consistent console output and pretty logging
 - **Ruff** for formatting + linting
-- **MyPy** (and Pyright/Pylance) for strict type checking
+- **MyPy** (and **Pyright/Pylance/typeguard**) for strict type checking
 - **Pytest + coverage** for tests
 - **pre-commit** + **GitHub Actions CI** to keep everything enforced automatically
 
@@ -1165,12 +1165,26 @@ If you want a calmer baseline, remove `"ALL"` and explicitly select rule groups.
 
 #### Typing checks (MyPy + Pyright)
 
-This repo supports strict typing in two ways:
+This repo supports strict typing in three ways:
 
 - **MyPy**: configured via `[tool.mypy]` in `pyproject.toml` (`strict = true`, plus many explicit strict flags)
 - **Pyright/Pylance**: configured via `[tool.pyright]` in `pyproject.toml` (`typeCheckingMode = "strict"`)
+- **typeguard**: configured in `[tool.pytest.ini_options.typeguard-*]` in `pyproject.toml`
 
-VSCode uses Pylance by default, so you get IDE-time feedback and CI-time enforcement.
+VSCode uses Pylance by default, so you get IDE-time feedback and CI-time enforcement. `typeguard` will be active during tests by default. You can suppress type checking in specific tests by invoking `@typeguard.suppress_type_checks` decorator or context:
+
+```py
+import typeguard
+
+@typeguard.suppress_type_checks
+def test_crazy_types() -> None:
+  # whole method is exempt from typeguard
+
+def test_less_crazy_types_test() -> None:
+  # this part of test is type-checked
+  with typeguard.suppress_type_checks():
+    # this part is not type checked
+```
 
 #### Tests + coverage (pytest)
 

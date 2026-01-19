@@ -19,7 +19,7 @@ def RandomNum(min_: int, max_: int) -> int:
       int: A random integer between min_ and max_ inclusive.
 
   """
-  return secrets.randbelow(max_ - min_ + 1) + min_
+  return secrets.randbelow(int(max_) - int(min_) + 1) + int(min_)
 
 
 def RandomStr(length: int, alphabet: str | None) -> str:

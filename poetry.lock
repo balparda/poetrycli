@@ -805,6 +805,21 @@ files = [
 ]
 
 [[package]]
+name = "typeguard"
+version = "4.4.4"
+description = "Run-time type checker for Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "typeguard-4.4.4-py3-none-any.whl", hash = "sha256:b5f562281b6bfa1f5492470464730ef001646128b180769880468bd84b68b09e"},
+    {file = "typeguard-4.4.4.tar.gz", hash = "sha256:3a7fd2dffb705d4d0efaed4306a704c89b9dee850b688f060a8b1615a79e5f74"},
+]
+
+[package.dependencies]
+typing_extensions = ">=4.14.0"
+
+[[package]]
 name = "typer"
 version = "0.21.1"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
@@ -858,4 +873,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "bd52b0842ba68855cb75a34451a742f2c72e540e5b5c697ecb4fdc91a8995847"
+content-hash = "f235f3737427234a6f66d53da95bdb526dc3f3ab350a78c9d714693ab1d60d0c"
