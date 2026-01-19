@@ -139,7 +139,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [Config path helper (`resources/config.py`)](#config-path-helper-resourcesconfigpy)
       - [Strict linting + formatting with Ruff (pyproject.toml)](#strict-linting--formatting-with-ruff-pyprojecttoml)
       - [Typing checks (MyPy + Pyright)](#typing-checks-mypy--pyright)
-      - [Tests + coverage (pytest)](#tests--coverage-pytest)
+      - [Tests + coverage (`pytest`)](#tests--coverage-pytest)
       - [Pre-commit checks](#pre-commit-checks)
       - [CI (GitHub Actions)](#ci-github-actions)
   - [Appendix **II**: Template Checklist: turning `poetrycli` into your new CLI project in 12 steps](#appendix-ii-template-checklist-turning-poetrycli-into-your-new-cli-project-in-12-steps)
@@ -624,7 +624,7 @@ poetry env info            # no-op: just to check that environment looks good
 poetry check               # no-op: make sure all pyproject.toml fields are being used correctly
 
 poetry run mycli --help    # simple test if everything loaded OK
-poetry run pytest -vvv     # should pass OK on clean repo
+make ci                    # should pass OK on clean repo
 ```
 
 To activate and use the environment do:
@@ -681,8 +681,10 @@ Recommended VSCode extensions:
 #### Unit tests / Coverage
 
 ```sh
-poetry run pytest -vvv                                 # verbose test run
-poetry run pytest --cov=src --cov-report=term-missing  # coverage run
+make test               # plain test run
+poetry run pytest -vvv  # verbose test run
+
+make cov  # coverage run, equivalent to: poetry run pytest --cov=src --cov-report=term-missing
 ```
 
 A test can be marked with a "tag" by just adding a decorator:
@@ -716,10 +718,10 @@ poetry run pytest -vvv -q --durations=20 -m "not slow"  # find unknown slow meth
 poetry run pytest -vvv -q --durations=20 -m slow        # check methods marked `slow` are in fact slow
 ```
 
-You can search for flaky tests by running all tests 100 times, or more, like:
+You can search for flaky tests by running `make flakes`, which runs all tests 100 times. Or you can do more, like in the example:
 
 ```sh
-poetry run pytest --flake-finder --flake-runs=100
+make flakes  # equivalent to: poetry run pytest --flake-finder --flake-runs=100
 poetry run pytest --flake-finder --flake-runs=10000 -m "not slow"
 ```
 
@@ -751,8 +753,8 @@ This will save a file `output1.html` to the project directory with the timings f
 ### Linting / formatting / static analysis
 
 ```sh
-poetry run ruff check .
-poetry run ruff format .
+make lint  # equivalent to: poetry run ruff check .
+make fmt   # equivalent to: poetry run ruff format .
 ```
 
 To check formatting without rewriting:
@@ -764,7 +766,7 @@ poetry run ruff format --check .
 #### Type checking
 
 ```sh
-poetry run mypy src
+make type  # equivalent to: poetry run mypy src
 ```
 
 (Pyright is primarily for editor-time; MyPy is what CI enforces.)
@@ -1015,7 +1017,7 @@ After changing versions, re-create your `.venv` (if you have already created it)
 
 ```sh
 rm -rf .venv
-poetry install
+make  # equivalent to: poetry install
 ```
 
 #### Customize CLI banner + top-level options
@@ -1186,12 +1188,12 @@ def test_less_crazy_types_test() -> None:
     # this part is not type checked
 ```
 
-#### Tests + coverage (pytest)
+#### Tests + coverage (`pytest`)
 
 Tests run with `pytest`, and CI runs coverage:
 
 ```sh
-poetry run pytest --cov=src --cov-report=term-missing
+make cov  # equivalent to: poetry run pytest --cov=src --cov-report=term-missing
 ```
 
 Coverage configuration in `pyproject.toml` omits:
@@ -1213,7 +1215,7 @@ poetry run pre-commit install
 Run on all files:
 
 ```sh
-poetry run pre-commit run --all-files
+make precommit  # equivalent to: poetry run pre-commit run --all-files
 ```
 
 Important: pre-commit runs tools in its own isolated environments pinned by `rev:` so if you bump Ruff/MyPy versions in `pyproject.toml` remember to update `.pre-commit-config.yaml` too.
@@ -1299,6 +1301,7 @@ Under `[project.urls]`:
 - Under `[tool.poetry.scripts]`: `mycli = "mycli.cli:app"` → update both sides:
   - CLI command name (left)
   - import path (right) to match your renamed package
+- In `.github/workflows/ci.yaml` update `mycli` name in `typeguard-packages`
 
 #### 3.3: If you change Python version…
 
@@ -1364,15 +1367,8 @@ Rule of thumb:
 From repo root:
 
 ```bash
-poetry install
-
-poetry run ruff format .
-poetry run ruff check .
-poetry run mypy src
-poetry run pytest --cov=src --cov-report=term-missing
-
-poetry run pre-commit install
-poetry run pre-commit run --all-files
+make     # equivalent to: poetry install
+make ci  # runs complete CI pipeline
 ```
 
 Expected:
