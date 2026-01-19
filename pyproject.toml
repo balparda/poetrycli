@@ -7,7 +7,7 @@
 ####################################################################################################
 [build-system]
 
-requires = ["poetry-core>=2.3"]
+requires = [ "poetry-core>=2.3" ]
 build-backend = "poetry.core.masonry.api"
 
 ####################################################################################################
@@ -42,7 +42,7 @@ classifiers = [  # see: https://pypi.org/classifiers/
 
 requires-python = ">=3.12"  # TODO: python VERSION; pick correct one
 readme = "README.md"
-license-files = ["LICENSE"]
+license-files = [ "LICENSE" ]
 
 dependencies = [
 
@@ -79,6 +79,10 @@ Changelog = "https://github.com/balparda/mycli/blob/main/CHANGELOG.md"
 requires-poetry = "^2.1"
 
 packages = [{ include = "mycli", from = "src" }]  # TODO: rename `mycli` part
+include = [
+  { path = "src/mycli/py.typed", format = "sdist" },  # TODO: rename `mycli` part
+  { path = "src/mycli/py.typed", format = "wheel" },  # TODO: rename `mycli` part
+]
 
 ####################################################################################################
 [tool.poetry.dependencies]
@@ -86,7 +90,7 @@ packages = [{ include = "mycli", from = "src" }]  # TODO: rename `mycli` part
 # prefer to add dependencies inside the [project.dependencies] section
 
 python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
-typer = {version = "^0.21", extras = ["all"]}  # if this changes, also change: .pre-commit-config.yaml
+typer = { version = "^0.21", extras = ["all"] }  # if this changes, also change: .pre-commit-config.yaml
 
 [tool.poetry.group.dev.dependencies]
 
@@ -108,7 +112,7 @@ poetry-plugin-export = "^1.10"
 target-version = "py312"  # TODO: python VERSION; pick correct one
 line-length = 100
 indent-width = 2
-src = ["scripts", "src", "tests"]
+src = [ "scripts", "src", "tests" ]
 
 [tool.ruff.format]
 
@@ -171,13 +175,13 @@ preview = true  # if you want new features being previewed
 
 [tool.ruff.lint.per-file-ignores]
 
-"tests/**/*.py" = ["S101"]
+"tests/**/*.py" = [ "S101" ]
 
 ####################################################################################################
 [tool.mypy]
 
 python_version = "3.12"  # TODO: python VERSION; pick correct one
-mypy_path = ["src"]
+mypy_path = [ "src" ]
 
 warn_return_any = true
 warn_unused_configs = true
@@ -200,7 +204,7 @@ pythonVersion = "3.12"  # TODO: python VERSION; pick correct one
 venvPath = "."
 venv = ".venv"
 
-include = ["scripts", "src", "tests"]
+include = [ "scripts", "src", "tests" ]
 exclude = [
   "**/.venv",
   "**/__pycache__",
@@ -214,8 +218,8 @@ exclude = [
 ####################################################################################################
 [tool.pytest.ini_options]
 
-pythonpath = ["src"]
-testpaths = ["tests"]
+pythonpath = [ "src" ]
+testpaths = [ "tests" ]
 addopts = [
   "-q",
   "--strict-markers",

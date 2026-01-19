@@ -512,7 +512,9 @@ cat input.txt | <project> <command> --from-stdin
 ├── src/
 │   └── <your_pkg>/          ⟸ change this directory's name (originally mycli)
 │       ├── __init__.py
+│       ├── __main__.py
 │       ├── cli.py           ⟸ Main CLI app entry point (Main())
+│       ├── py.typed
 │       ├── core/
 │       │   ├── __init__.py
 │       │   └── example.py   ⟸ Business logic goes in this directory
