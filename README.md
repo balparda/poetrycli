@@ -23,6 +23,7 @@
 - **MyPy** (and **Pyright/Pylance/typeguard**) for strict type checking
 - **Pytest + coverage** for tests
 - **pre-commit** + **GitHub Actions CI** to keep everything enforced automatically
+- **dependabot** to keep dependencies always up-to-date
 
 The `poetrycli` repo is intentionally opinionated because it was built to help the authors (2-space indentation, single quotes, strict typing, “select ALL rules” linting are examples) but includes escape hatches and ***TODO*** markers to customize quickly. Started in Jan/2026, by ***Daniel Balparda***.
 
@@ -110,8 +111,6 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
         - [Publish to PyPI](#publish-to-pypi)
     - [*Contributing (TODO)*](#contributing-todo)
   - [*Security (TODO)*](#security-todo)
-    - [*Supported versions (TODO)*](#supported-versions-todo)
-    - [*Reporting vulnerabilities (TODO)*](#reporting-vulnerabilities-todo)
     - [*Supply chain (TODO)*](#supply-chain-todo)
   - [*Reliability (TODO)*](#reliability-todo)
     - [*Operational guidance (TODO)*](#operational-guidance-todo)
@@ -500,11 +499,14 @@ cat input.txt | <project> <command> --from-stdin
 
 ```txt
 .
+├── CHANGELOG.md             ⟸ latest changes/releases
 ├── pyproject.toml           ⟸ most important configurations live here
 ├── LICENSE
-├── README.md
+├── README.md                ⟸ this documentation
+├── SECURITY.md              ⟸ security policy
 ├── .pre-commit-config.yaml  ⟸ pre-submit
 ├── .github/
+│   ├── dependabot.yaml      ⟸ Github dependency update pipeline
 │   └── workflows/
 │       └── ci.yaml          ⟸ Github CI pipeline
 ├── .vscode/
@@ -812,6 +814,8 @@ This updates `[project].version` in `pyproject.toml`. **Remember to also update 
 
 ##### Update dependency versions
 
+The project has a [**dependabot**](https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/dependabot-quickstart-guide) config file in `.github/dependabot.yaml` that weekly (defaulting to Tuesdays) scans both Github actions and the project dependencies and creates PRs to update them.
+
 To update `poetry.lock` file to more current versions do `poetry update`, it will ignore the current lock, update, and rewrite the `poetry.lock` file. If you have cache problems `poetry cache clear PyPI --all` will clean it.
 
 To add a new dependency you should do:
@@ -859,6 +863,8 @@ poetry build
 poetry publish
 ```
 
+Remember to update [CHANGELOG.md](CHANGELOG.md).
+
 ### *Contributing (TODO)*
 
 - *See `CONTRIBUTING.md*`
@@ -866,18 +872,7 @@ poetry publish
 
 ## *Security (TODO)*
 
-### *Supported versions (TODO)*
-
-- *\<Which versions receive security fixes?\>*
-
-### *Reporting vulnerabilities (TODO)*
-
-*Please report security issues privately via:*
-
-- *Email:*
-- *Or: \<security policy link / issue template\>*
-
-***Do not open public issues for suspected vulnerabilities.***
+Please refer to the security policy in [SECURITY.md](SECURITY.md) for supported versions and how to report vulnerabilities.
 
 ### *Supply chain (TODO)*
 
@@ -1395,6 +1390,7 @@ Expected:
 - Not all topics and sections are relevant for every project: pick the ones you want, and maybe delete the rest
 - rename “mycli” references, usage examples, repo links
 - `CHANGELOG.md` (reset it to your new project)
+- `SECURITY.md` (make sure contact details are up to date)
 - `LICENSE` file and [README header](#license) if your project changes license/ownership
 
 ### 12: “Cleanup”
