@@ -200,6 +200,7 @@ def test_random_str_default_alphabet_prints_expected(
   assert _printed_value(console) == expected
 
 
+@pytest.mark.slow  # <-- example of marking a test as slow
 @pytest.mark.parametrize(
   ('alphabet', 'length', 'choices', 'expected'),
   [

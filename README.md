@@ -1,4 +1,4 @@
-# poetrycli — Python 3.12-14 Poetry CLI Template (Typer + Rich + Ruff + MyPy)
+# poetrycli - Python/Poetry/Typer/Rich CLI Template
 
 ***TODO:*** *One-line description of what this CLI does and who it’s for. Change the title above.*
 
@@ -30,97 +30,101 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
 
 ## Table of contents
 
-- [poetrycli — Python 3.12-14 Poetry CLI Template (Typer + Rich + Ruff + MyPy)](#poetrycli--python-312-14-poetry-cli-template-typer--rich--ruff--mypy)
+- [poetrycli - Python/Poetry/Typer/Rich CLI Template](#poetrycli---pythonpoetrytyperrich-cli-template)
   - [Table of contents](#table-of-contents)
   - [License](#license)
-    - [*Third-party notices*](#third-party-notices)
-    - [*Contributions and inbound licensing*](#contributions-and-inbound-licensing)
-  - [*Installation*](#installation)
-    - [*Supported platforms*](#supported-platforms)
+    - [*Third-party notices (TODO)*](#third-party-notices-todo)
+    - [*Contributions and inbound licensing (TODO)*](#contributions-and-inbound-licensing-todo)
+  - [*Installation (TODO)*](#installation-todo)
+    - [*Supported platforms (TODO)*](#supported-platforms-todo)
     - [Known dependencies (Prerequisites)](#known-dependencies-prerequisites)
-  - [*Context / Problem Space*](#context--problem-space)
-    - [*What this tool is*](#what-this-tool-is)
-    - [*What this tool is not*](#what-this-tool-is-not)
-    - [*Key concepts and terminology*](#key-concepts-and-terminology)
-    - [*Inputs and outputs*](#inputs-and-outputs)
-      - [*Inputs*](#inputs)
-      - [*Outputs*](#outputs)
-  - [*Design assumptions / Disclaimers*](#design-assumptions--disclaimers)
-    - [*Guarantees and stability*](#guarantees-and-stability)
-    - [*Assumptions*](#assumptions)
-    - [*Known limitations*](#known-limitations)
-    - [*Deprecation policy*](#deprecation-policy)
-    - [*Privacy / telemetry*](#privacy--telemetry)
-  - [*CLI Interface*](#cli-interface)
-    - [*Quick start*](#quick-start)
-    - [*Common workflows*](#common-workflows)
-      - [*Workflow 1*](#workflow-1)
-      - [*Workflow 2*](#workflow-2)
-    - [*Command structure*](#command-structure)
-    - [*Global flags*](#global-flags)
-    - [*Commands overview*](#commands-overview)
-    - [*Configuration*](#configuration)
-      - [Config file locations](#config-file-locations)
-      - [*Configuration schema (example)*](#configuration-schema-example)
-      - [*Validate configuration*](#validate-configuration)
-      - [*Environment variables*](#environment-variables)
-    - [*Input / output behavior*](#input--output-behavior)
-      - [*`stdin` and piping*](#stdin-and-piping)
-      - [*Output formats*](#output-formats)
-      - [*Color and formatting*](#color-and-formatting)
-      - [*Exit codes*](#exit-codes)
-    - [*Logging and observability*](#logging-and-observability)
-    - [*Safety features*](#safety-features)
-  - [*Project Design*](#project-design)
-    - [*Architecture overview*](#architecture-overview)
-    - [*Modules / packages*](#modules--packages)
-    - [*Data flow*](#data-flow)
-    - [*Error handling philosophy*](#error-handling-philosophy)
-    - [*Security model (high-level)*](#security-model-high-level)
-    - [*Performance characteristics*](#performance-characteristics)
+  - [*Context / Problem Space (TODO)*](#context--problem-space-todo)
+    - [*What this tool is (TODO)*](#what-this-tool-is-todo)
+    - [*What this tool is not (TODO)*](#what-this-tool-is-not-todo)
+    - [*Key concepts and terminology* (TODO)](#key-concepts-and-terminology-todo)
+    - [*Inputs and outputs (TODO)*](#inputs-and-outputs-todo)
+      - [*Inputs (TODO)*](#inputs-todo)
+      - [*Outputs (TODO)*](#outputs-todo)
+  - [*Design assumptions / Disclaimers (TODO)*](#design-assumptions--disclaimers-todo)
+    - [*Guarantees and stability (TODO)*](#guarantees-and-stability-todo)
+    - [*Assumptions (TODO)*](#assumptions-todo)
+    - [*Known limitations (TODO)*](#known-limitations-todo)
+    - [*Deprecation policy (TODO)*](#deprecation-policy-todo)
+    - [*Privacy / telemetry (TODO)*](#privacy--telemetry-todo)
+  - [*CLI Interface (TODO)*](#cli-interface-todo)
+    - [*Quick start (TODO)*](#quick-start-todo)
+    - [*Common workflows (TODO)*](#common-workflows-todo)
+      - [*Workflow 1 (TODO)*](#workflow-1-todo)
+      - [*Workflow 2 (TODO)*](#workflow-2-todo)
+    - [*Command structure (TODO)*](#command-structure-todo)
+    - [*Global flags (TODO)*](#global-flags-todo)
+    - [*Commands overview (TODO)*](#commands-overview-todo)
+    - [*Configuration (TODO)*](#configuration-todo)
+      - [*Config file locations (TODO)*](#config-file-locations-todo)
+      - [*Configuration schema (TODO)*](#configuration-schema-todo)
+      - [*Validate configuration (TODO)*](#validate-configuration-todo)
+      - [*Environment variables (TODO)*](#environment-variables-todo)
+    - [*Input / output behavior (TODO)*](#input--output-behavior-todo)
+      - [*`stdin` and piping (TODO)*](#stdin-and-piping-todo)
+      - [*Output formats (TODO)*](#output-formats-todo)
+      - [*Color and formatting (TODO)*](#color-and-formatting-todo)
+      - [*Exit codes (TODO)*](#exit-codes-todo)
+    - [*Logging and observability (TODO)*](#logging-and-observability-todo)
+    - [*Safety features (TODO)*](#safety-features-todo)
+  - [*Project Design (TODO)*](#project-design-todo)
+    - [*Architecture overview (TODO)*](#architecture-overview-todo)
+    - [*Modules / packages (TODO)*](#modules--packages-todo)
+    - [*Data flow (TODO)*](#data-flow-todo)
+    - [*Error handling philosophy (TODO)*](#error-handling-philosophy-todo)
+    - [*Security model (TODO)*](#security-model-todo)
+    - [*Performance characteristics (TODO)*](#performance-characteristics-todo)
   - [Development Instructions](#development-instructions)
     - [File structure](#file-structure)
     - [Development Setup](#development-setup)
-      - [Requirements](#requirements)
+      - [*Requirements (TODO)*](#requirements-todo)
+      - [Install Python](#install-python)
       - [Install Poetry (recommended: `pipx`)](#install-poetry-recommended-pipx)
       - [Make sure `.venv` is local](#make-sure-venv-is-local)
-      - [Install dependencies](#install-dependencies)
+      - [Get the repository](#get-the-repository)
+      - [Create environment and install dependencies](#create-environment-and-install-dependencies)
       - [Optional: VSCode setup](#optional-vscode-setup)
-    - [*Build*](#build)
-    - [*Run locally*](#run-locally)
+    - [*Build (TODO)*](#build-todo)
+    - [*Run locally (TODO)*](#run-locally-todo)
     - [Testing](#testing)
       - [Unit tests / Coverage](#unit-tests--coverage)
-      - [*Integration / e2e tests*](#integration--e2e-tests)
-      - [*Golden tests for CLI output*](#golden-tests-for-cli-output)
+      - [Instrumenting your code](#instrumenting-your-code)
+      - [*Integration / e2e tests (TODO)*](#integration--e2e-tests-todo)
+      - [*Golden tests for CLI output (TODO)*](#golden-tests-for-cli-output-todo)
     - [Linting / formatting / static analysis](#linting--formatting--static-analysis)
       - [Type checking](#type-checking)
-    - [*Documentation updates*](#documentation-updates)
+    - [*Documentation updates (TODO)*](#documentation-updates-todo)
     - [Versioning and releases](#versioning-and-releases)
       - [Versioning scheme](#versioning-scheme)
       - [Updating versions](#updating-versions)
         - [Bump project version (patch/minor/major)](#bump-project-version-patchminormajor)
         - [Update dependency versions](#update-dependency-versions)
-      - [Exporting `requirements.txt` (optional)](#exporting-requirementstxt-optional)
-        - [Install the export plugin (once per machine)](#install-the-export-plugin-once-per-machine)
-        - [Export requirements](#export-requirements)
-    - [*Contributing*](#contributing)
-  - [*Security*](#security)
-    - [*Supported versions*](#supported-versions)
-    - [*Reporting vulnerabilities*](#reporting-vulnerabilities)
-    - [*Supply chain*](#supply-chain)
-  - [*Reliability*](#reliability)
-    - [*Operational guidance*](#operational-guidance)
-    - [\*Running in automation](#running-in-automation)
-    - [*Failure modes*](#failure-modes)
-  - [*Troubleshooting*](#troubleshooting)
-    - [*Enable debug output*](#enable-debug-output)
-    - [*Common issues*](#common-issues)
-    - [*Collect diagnostics*](#collect-diagnostics)
-  - [*FAQ*](#faq)
-    - [*FAQ Section I*](#faq-section-i)
-      - [*Why does `<project>` need `<permission/dependency>`?*](#why-does-project-need-permissiondependency)
-      - [*How do I migrate from version X to Y?*](#how-do-i-migrate-from-version-x-to-y)
-      - [*How stable is the JSON output?*](#how-stable-is-the-json-output)
+        - [Exporting the `requirements.txt` file](#exporting-the-requirementstxt-file)
+        - [Git tag and commit](#git-tag-and-commit)
+        - [Publish to PyPI](#publish-to-pypi)
+    - [*Contributing (TODO)*](#contributing-todo)
+  - [*Security (TODO)*](#security-todo)
+    - [*Supported versions (TODO)*](#supported-versions-todo)
+    - [*Reporting vulnerabilities (TODO)*](#reporting-vulnerabilities-todo)
+    - [*Supply chain (TODO)*](#supply-chain-todo)
+  - [*Reliability (TODO)*](#reliability-todo)
+    - [*Operational guidance (TODO)*](#operational-guidance-todo)
+    - [*Running in automation (TODO)*](#running-in-automation-todo)
+    - [*Failure modes (TODO)*](#failure-modes-todo)
+  - [*Troubleshooting (TODO)*](#troubleshooting-todo)
+    - [*Enable debug output (TODO)*](#enable-debug-output-todo)
+    - [*Common issues (TODO)*](#common-issues-todo)
+    - [*Collect diagnostics (TODO)*](#collect-diagnostics-todo)
+  - [*FAQ (TODO)*](#faq-todo)
+    - [*FAQ Section I (TODO)*](#faq-section-i-todo)
+      - [*Why does `<project>` need `<permission/dependency>`? (TODO)*](#why-does-project-need-permissiondependency-todo)
+      - [*How do I migrate from version X to Y? (TODO)*](#how-do-i-migrate-from-version-x-to-y-todo)
+      - [*How stable is the JSON output? (TODO)*](#how-stable-is-the-json-output-todo)
+  - [*Glossary (TODO)*](#glossary-todo)
   - [Appendix **I**: Using the `poetrycli` template](#appendix-i-using-the-poetrycli-template)
     - [New Projects](#new-projects)
       - [Rename the package + CLI entrypoint](#rename-the-package--cli-entrypoint)
@@ -155,7 +159,6 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
     - [10: First release workflow (suggested)](#10-first-release-workflow-suggested)
     - [11:  Update README](#11--update-readme)
     - [12: “Cleanup”](#12-cleanup)
-  - [*Glossary*](#glossary)
 
 ## License
 
@@ -165,19 +168,19 @@ Licensed under the ***Apache License, Version 2.0*** (the "License"); you may no
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-### *Third-party notices*
+### *Third-party notices (TODO)*
 
 *This project includes or depends on third-party software. See:*
 
 - *NOTICE \<link\> (if applicable)*
 - *Dependency license list: \<link or section\>*
 
-### *Contributions and inbound licensing*
+### *Contributions and inbound licensing (TODO)*
 
 - *Contributions are accepted under: \<same as project license | CLA | DCO\>*
 - *Policy: \<link to CONTRIBUTING.md\>*
 
-## *Installation*
+## *Installation (TODO)*
 
 *To use in your project just do:*
 
@@ -187,7 +190,7 @@ pip3 install <your_pkg>
 
 *and then `from <your_pkg> import <your_library>` (or other parts of the library) for using it.*
 
-### *Supported platforms*
+### *Supported platforms (TODO)*
 
 - *OS: \<Linux | macOS | Windows\>*
 - *Architectures: \<x86_64 | arm64\>*
@@ -202,72 +205,72 @@ pip3 install <your_pkg>
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
 - ***TODO:*** *add your main dependencies here too*
 
-## *Context / Problem Space*
+## *Context / Problem Space (TODO)*
 
-### *What this tool is*
+### *What this tool is (TODO)*
 
 *\<Describe the CLI in one paragraph. Emphasize outcomes and workflows.\>*
 
-### *What this tool is not*
+### *What this tool is not (TODO)*
 
 - *Not intended for:*
 - *Not a replacement for:*
 
-### *Key concepts and terminology*
+### *Key concepts and terminology* (TODO)
 
 - *A*
 - *B*
 
-### *Inputs and outputs*
+### *Inputs and outputs (TODO)*
 
-#### *Inputs*
+#### *Inputs (TODO)*
 
 - *stdin: \<supported | not supported\>*
 - *Files: \<paths, globs, formats\>*
 - *Network/API: \<endpoints, services\>*
 - *Environment variables/config:*
 
-#### *Outputs*
+#### *Outputs (TODO)*
 
 - *stdout: \<human output / structured output\>*
 - *stderr: \<errors/logging\>*
 - *Files/artifacts:*
 
-## *Design assumptions / Disclaimers*
+## *Design assumptions / Disclaimers (TODO)*
 
-### *Guarantees and stability*
+### *Guarantees and stability (TODO)*
 
 - *CLI flags/commands stability: \<stable | may change\>*
 - *JSON output stability: \<stable schema | best-effort\>*
 - *Backward compatibility:*
 
-### *Assumptions*
+### *Assumptions (TODO)*
 
 - *Environment: \<filesystem, permissions, network access\>*
 - *Locale/encoding: \<UTF-8 expected?\>*
 - *Time/timezone:*
 
-### *Known limitations*
+### *Known limitations (TODO)*
 
 - *Scale limits: \<e.g., tested up to 10k files\>*
 - *Platform limitations: \<e.g., Windows path edge cases\>*
 - *Edge cases: \<symlinks, long paths, etc.\>*
 
-### *Deprecation policy*
+### *Deprecation policy (TODO)*
 
 - *Deprecations are announced via:*
 - *Timeline: \<e.g., 2 minor versions\>*
 - *Migration guidance:*
 
-### *Privacy / telemetry*
+### *Privacy / telemetry (TODO)*
 
 - *Telemetry: \<none | optional | on by default\>*
 - *What is collected:*
 - *How to disable: \<env var | config flag\>*
 
-## *CLI Interface*
+## *CLI Interface (TODO)*
 
-### *Quick start*
+### *Quick start (TODO)*
 
 *Minimal example.*
 
@@ -275,21 +278,21 @@ pip3 install <your_pkg>
 <project> <command> <arg>
 ```
 
-### *Common workflows*
+### *Common workflows (TODO)*
 
-#### *Workflow 1*
+#### *Workflow 1 (TODO)*
 
 ```sh
 <project> <cmd> --flag value <input>
 ```
 
-#### *Workflow 2*
+#### *Workflow 2 (TODO)*
 
 ```sh
 <project> <cmd> <input> --output <file>
 ```
 
-### *Command structure*
+### *Command structure (TODO)*
 
 General shape:
 
@@ -297,7 +300,7 @@ General shape:
 <project> [global flags] <command> [command flags] [args]
 ```
 
-### *Global flags*
+### *Global flags (TODO)*
 
 | Flag | Description | Default |
 | --- | --- | --- |
@@ -310,7 +313,7 @@ General shape:
 
 Add only the flags you actually support.
 
-### *Commands overview*
+### *Commands overview (TODO)*
 
 | Command | Description |
 | --- | --- |
@@ -366,15 +369,15 @@ Common errors
 - \<error message\> →
 ```
 
-### *Configuration*
+### *Configuration (TODO)*
 
-#### Config file locations
+#### *Config file locations (TODO)*
 
-- Linux: `~/.config/<project>/config.<json|yaml|toml>`
-- macOS: `~/Library/Application Support/<project>/config.<...>`
-- Windows: `%APPDATA%\<project>\config.<...>`
+- *Linux: `~/.config/<project>/config.<json|yaml|toml>`*
+- *macOS: `~/Library/Application Support/<project>/config.<...>`*
+- *Windows: `%APPDATA%\<project>\config.<...>`*
 
-#### *Configuration schema (example)*
+#### *Configuration schema (TODO)*
 
 ```yaml
 # ~/.config/<project>/config.yaml
@@ -386,14 +389,14 @@ output:
   color: auto   # auto|always|never
 ```
 
-#### *Validate configuration*
+#### *Validate configuration (TODO)*
 
 ```sh
 <project> config validate
 <project> config show --effective
 ```
 
-#### *Environment variables*
+#### *Environment variables (TODO)*
 
 | Variable | Description | Default | Notes |
 | --- | --- | --- | --- |
@@ -401,25 +404,25 @@ output:
 | `<PROJECT>_LOG_LEVEL` | Log level | info | debug |
 | `<PROJECT>_NO_COLOR` | Disable color | \<unset\> | obeys `NO_COLOR` too |
 
-### *Input / output behavior*
+### *Input / output behavior (TODO)*
 
-#### *`stdin` and piping*
+#### *`stdin` and piping (TODO)*
 
 ```sh
 cat input.txt | <project> <command> --from-stdin
 ```
 
-#### *Output formats*
+#### *Output formats (TODO)*
 
-- Human-readable (default)
-- JSON (--json) for automation and scripting
+- *Human-readable (default)*
+- *JSON (`--json`) for automation and scripting*
 
-#### *Color and formatting*
+#### *Color and formatting (TODO)*
 
-- Respects NO_COLOR (recommended)
-- --no-color / --color=auto|always|never (if supported)
+- *Respects NO_COLOR (recommended)*
+- *`--no-color` / `--color`=auto|always|never (if supported)*
 
-#### *Exit codes*
+#### *Exit codes (TODO)*
 
 | Code | Meaning |
 | --- | --- |
@@ -429,23 +432,23 @@ cat input.txt | <project> <command> --from-stdin
 | 3 | Runtime dependency failure (network/filesystem) |
 | 4 | Partial success (some items failed) |
 
-Keep this stable if users will script against it.
+*Keep this stable if users will script against it.*
 
-### *Logging and observability*
+### *Logging and observability (TODO)*
 
 - *Log levels: error|warn|info|debug|trace*
 - *Structured logs: \<supported? --log-format=json\>*
 - *Debug bundle: \<project\> debug report (if available)*
 
-### *Safety features*
+### *Safety features (TODO)*
 
 - *Dry run: `--dry-run` (no side effects)*
 - *Non-interactive: `--yes` / `--no-input`*
 - *Force: `--force` (document exactly what it bypasses)*
 
-## *Project Design*
+## *Project Design (TODO)*
 
-### *Architecture overview*
+### *Architecture overview (TODO)*
 
 *\<High-level description of components and how they interact.\>*
 
@@ -454,7 +457,7 @@ Keep this stable if users will script against it.
 - *CLI parser → configuration loader → core engine → output renderer*
 - *Optional: plugins/adapters for external systems*
 
-### *Modules / packages*
+### *Modules / packages (TODO)*
 
 | Component | Responsibility |
 | --- | --- |
@@ -463,7 +466,7 @@ Keep this stable if users will script against it.
 | internal/io/ | Filesystem/network adapters |
 | internal/output/ | Output formatting (human/JSON) |
 
-### *Data flow*
+### *Data flow (TODO)*
 
 1. *Parse args + load config*
 1. *Validate inputs*
@@ -471,19 +474,19 @@ Keep this stable if users will script against it.
 1. *Collect results and render output*
 1. *Return exit code*
 
-### *Error handling philosophy*
+### *Error handling philosophy (TODO)*
 
 - *Clear actionable messages for user errors*
 - *Structured errors for --json*
 - *Avoid leaking secrets in errors/logs*
 
-### *Security model (high-level)*
+### *Security model (TODO)*
 
 - *Principle of least privilege*
 - *Secret handling: never log secrets; redact by default*
 - *TLS verification: on by default; disabling requires explicit opt-in*
 
-### *Performance characteristics*
+### *Performance characteristics (TODO)*
 
 - *Intended scale:*
 - *Complexity notes:*
@@ -543,7 +546,31 @@ Make sure you are familiar with the [`poetrycli` Features explained](#poetrycli-
 
 ### Development Setup
 
-#### Requirements
+#### *Requirements (TODO)*
+
+#### Install Python
+
+Here is a suggested recipe to install an arbitrary Python version on **Linux**:
+
+```sh
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install git python3 python3-dev python3-venv build-essential software-properties-common
+
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.12  # or python3.13 or python3.14 - TODO: pick a version
+```
+
+and on **Mac**:
+
+```sh
+brew update
+brew upgrade
+brew cleanup -s
+
+brew install git python@3.12  # or python3.13 or python3.14 - TODO: pick a version
+```
 
 #### Install Poetry (recommended: `pipx`)
 
@@ -563,6 +590,12 @@ pipx install poetry
 poetry --version
 ```
 
+If you will use [PyPI](https://pypi.org/) to publish:
+
+```sh
+poetry config pypi-token.pypi <TOKEN>  # add your personal PyPI project token, if any
+```
+
 #### Make sure `.venv` is local
 
 This template expects a project-local virtual environment at `./.venv` (VSCode settings assume it, for example).
@@ -571,13 +604,36 @@ This template expects a project-local virtual environment at `./.venv` (VSCode s
 poetry config virtualenvs.in-project true
 ```
 
-#### Install dependencies
+#### Get the repository
+
+```sh
+git clone https://github.com/balparda/poetrycli.git poetrycli  # TODO: change to your project's repo
+cd poetrycli
+```
+
+#### Create environment and install dependencies
 
 From the repository root:
 
 ```sh
-poetry install
-poetry run mycli --help  # simple test if everything loaded OK
+poetry env use python3.12  # creates the .venv with the correct Python version - TODO: pick correct Python version
+poetry sync                # sync env to project's poetry.lock file
+poetry env info            # no-op: just to check that environment looks good
+poetry check               # no-op: make sure all pyproject.toml fields are being used correctly
+
+poetry run mycli --help    # simple test if everything loaded OK
+poetry run pytest -vvv     # should pass OK on clean repo
+```
+
+To activate and use the environment do:
+
+```sh
+poetry env activate        # (optional) will print activation command for environment, but you can just use:
+source .venv/bin/activate  # because .venv SHOULD BE LOCAL
+...
+pytest -vvv  # for example, or other commands you want to execute in-environment
+...
+deactivate  # to close environment
 ```
 
 #### Optional: VSCode setup
@@ -605,13 +661,13 @@ Recommended VSCode extensions:
 - Markdown All in One (`yzhang.markdown-all-in-one`) - helps maintain this `README.md` table of contents
 - Markdown Preview Enhanced (`shd101wyy.markdown-preview-enhanced`, optional)
 
-### *Build*
+### *Build (TODO)*
 
 ```sh
 <build command>
 ```
 
-### *Run locally*
+### *Run locally (TODO)*
 
 ```sh
 <project> --help
@@ -623,17 +679,69 @@ Recommended VSCode extensions:
 #### Unit tests / Coverage
 
 ```sh
-poetry run pytest
-poetry run pytest --cov=src --cov-report=term-missing
+poetry run pytest -vvv                                 # verbose test run
+poetry run pytest --cov=src --cov-report=term-missing  # coverage run
 ```
 
-#### *Integration / e2e tests*
+A test can be marked with a "tag" by just adding a decorator:
+
+```py
+@pytest.mark.slow
+def test_foo_method() -> None:
+  """Test."""
+  ...
+```
+
+These tags, like `slow` above are defined in `pyproject.toml`, in section `[tool.pytest.ini_options.markers]`, and you can define your own there. The ones already defined are:
+
+| Tag | Meaning |
+| --- | --- |
+| `slow` | test is slow (> 1s) |
+| `flaky` | AVOID! - test is known to be flaky |
+| `stochastic` | test is capable of failing (even if very unlikely) |
+
+You can use them to filter tests, for example:
+
+```sh
+poetry run pytest -vvv -m slow  # run only the slow tests
+```
+
+You can find the slowest tests by running (example suggestions):
+
+```sh
+poetry run pytest -vvv -q --durations=20
+poetry run pytest -vvv -q --durations=20 -m "not slow"  # find unknown slow methods
+poetry run pytest -vvv -q --durations=20 -m slow        # check methods marked `slow` are in fact slow
+```
+
+You can search for flaky tests by running all tests 100 times, or more, like:
+
+```sh
+poetry run pytest --flake-finder --flake-runs=100
+poetry run pytest --flake-finder --flake-runs=10000 -m "not slow"
+```
+
+#### Instrumenting your code
+
+You can instrument your code to find bottlenecks:
+
+```sh
+$ source .venv/bin/activate
+$ which mycli
+/path/to/.venv/bin/mycli  # <== place this in the command below:
+$ pyinstrument -r html -o output1.html -- /path/to/.venv/bin/mycli <your-cli-command> <your-cli-flags>
+$ deactivate
+```
+
+This will save a file `output1.html` to the project directory with the timings for all method calls. Make sure to **cleanup** these html files later.
+
+#### *Integration / e2e tests (TODO)*
 
 ```sh
 <integration test command>
 ```
 
-#### *Golden tests for CLI output*
+#### *Golden tests for CLI output (TODO)*
 
 - *Human output:*
 - *JSON output:*
@@ -659,7 +767,7 @@ poetry run mypy src
 
 (Pyright is primarily for editor-time; MyPy is what CI enforces.)
 
-### *Documentation updates*
+### *Documentation updates (TODO)*
 
 - *How docs are built: \<mkdocs/docusaurus/sphinx/etc.\>*
 - *CLI reference generation:*
@@ -685,39 +793,27 @@ See: [CHANGELOG.md](CHANGELOG.md)
 Poetry can bump versions:
 
 ```sh
-poetry version patch
-poetry version minor
-poetry version major
+# bump the version!
+poetry version minor  # updates 1.6 to 1.7, for example
+# or:
+poetry version patch  # updates 1.6 to 1.6.1
+# or:
+poetry version <version-number>
+# (also updates `pyproject.toml` and `poetry.lock`)
 ```
 
-This updates `[project].version` in `pyproject.toml`. *Also update `src/<your_pkg>/__init__.py` to match (this repo gets/prints `__version__` from there)!*
-
-Recommended workflow:
-
-1. `poetry version patch` (or `minor`/`major`)
-1. update `src/<your_pkg>/__init__.py` (`__version__ = "..."`)
-1. run `poetry run <yourcli> --version`
-1. run tests + lint + typing
-1. commit both files together
+This updates `[project].version` in `pyproject.toml`. **Remember to also update `src/<your_pkg>/__init__.py` to match (this repo gets/prints `__version__` from there)!**
 
 ##### Update dependency versions
 
-To update locked dependencies:
+To update `poetry.lock` file to more current versions do `poetry update`, it will ignore the current lock, update, and rewrite the `poetry.lock` file. If you have cache problems `poetry cache clear PyPI --all` will clean it.
+
+To add a new dependency you should do:
 
 ```sh
-poetry update
-```
-
-To add a dependency:
-
-```sh
-poetry add <package>
-```
-
-To add a developer-only dependency:
-
-```sh
-poetry add --group dev <package>
+poetry add "pkg>=1.2.3"  # regenerates lock, updates env (adds dep to prod code)
+poetry add -G dev "pkg>=1.2.3"  # adds dep to dev code ("group" dev)
+# also remember: "pkg@^1.2.3" = latest 1.* ; "pkg@~1.2.3" = latest 1.2.* ; "pkg@1.2.3" exact
 ```
 
 Keep tool versions aligned. This repo pins:
@@ -725,38 +821,50 @@ Keep tool versions aligned. This repo pins:
 - `ruff` and `mypy` versions in `pyproject.toml`
 - and also pins them in `.pre-commit-config.yaml`
 
-If you bump one, bump the other (otherwise you’ll get “works in CI/IDE but fails in pre-commit” mismatches).
+If you bump one, bump the other (otherwise you’ll get “works in CI/IDE but fails in pre-commit” mismatches). Remember to check your diffs before submitting (especially `poetry.lock`) to avoid surprises!
 
-#### Exporting `requirements.txt` (optional)
+##### Exporting the `requirements.txt` file
 
-This template does not generate `requirements.txt` automatically (Poetry uses poetry.lock). If you need a `requirements.txt` for Docker/legacy tooling, use Poetry’s export plugin:
-
-##### Install the export plugin (once per machine)
+This template does not generate `requirements.txt` automatically (Poetry uses `poetry.lock`). If you need a `requirements.txt` for Docker/legacy tooling, use Poetry’s export plugin (`poetry-plugin-export`) by simply running:
 
 ```sh
-poetry self add poetry-plugin-export
+poetry export --format requirements.txt --without-hashes --output requirements.txt
 ```
 
-##### Export requirements
+Tip: If you want auto-export every time the lockfile changes, consider a plugin like `poetry-auto-export` (optional policy choice).
+
+##### Git tag and commit
+
+Publish to GIT, including a TAG:
 
 ```sh
-poetry export -f requirements.txt -o requirements.txt --without-hashes
+git commit -a -m "release version 0.1.0"
+git tag 0.1.0
+git push
+git push --tags
 ```
 
-Tip: If you want auto-export every time the lockfile changes, consider a plugin like poetry-auto-export (optional policy choice).
+##### Publish to PyPI
 
-### *Contributing*
+If you already have your PyPI token registered with Poetry (see [Install Poetry](#install-poetry-recommended-pipx)) then just:
+
+```sh
+poetry build
+poetry publish
+```
+
+### *Contributing (TODO)*
 
 - *See `CONTRIBUTING.md*`
 - *Code of conduct: `CODE_OF_CONDUCT.md`*
 
-## *Security*
+## *Security (TODO)*
 
-### *Supported versions*
+### *Supported versions (TODO)*
 
 - *\<Which versions receive security fixes?\>*
 
-### *Reporting vulnerabilities*
+### *Reporting vulnerabilities (TODO)*
 
 *Please report security issues privately via:*
 
@@ -765,42 +873,42 @@ Tip: If you want auto-export every time the lockfile changes, consider a plugin 
 
 ***Do not open public issues for suspected vulnerabilities.***
 
-### *Supply chain*
+### *Supply chain (TODO)*
 
 - *Dependency pinning:*
 - *Signed releases: \<GPG/cosign\>*
 - *SBOM: \<available? where?\>*
 
-## *Reliability*
+## *Reliability (TODO)*
 
-### *Operational guidance*
+### *Operational guidance (TODO)*
 
 - *Recommended timeouts:*
 - *Retry behavior:*
 - *Idempotency:*
 
-### *Running in automation
+### *Running in automation (TODO)*
 
 - *CI usage examples*
 - *Cron usage examples*
 - *Non-interactive flags (`--yes`, `--json`, `--quiet`)*
 
-### *Failure modes*
+### *Failure modes (TODO)*
 
 - *Network failures:*
 - *Partial failures: \<exit code + output behavior\>*
 - *Rate limiting:*
 
-## *Troubleshooting*
+## *Troubleshooting (TODO)*
 
-### *Enable debug output*
+### *Enable debug output (TODO)*
 
 ```sh
 <project> --verbose
 <project> --log-level debug <command>
 ```
 
-### *Common issues*
+### *Common issues (TODO)*
 
 - *Problem:*
 *Cause:*
@@ -809,27 +917,32 @@ Tip: If you want auto-export every time the lockfile changes, consider a plugin 
 - *Problem:*
 *Fix:*
 
-### *Collect diagnostics*
+### *Collect diagnostics (TODO)*
 
 ```sh
 <project> debug report --output diagnostics.zip
 ```
 
-## *FAQ*
+## *FAQ (TODO)*
 
-### *FAQ Section I*
+### *FAQ Section I (TODO)*
 
-#### *Why does `<project>` need `<permission/dependency>`?*
+#### *Why does `<project>` need `<permission/dependency>`? (TODO)*
 
 *\<Answer\>*
 
-#### *How do I migrate from version X to Y?*
+#### *How do I migrate from version X to Y? (TODO)*
 
 *\<Answer + link to migration guide\>*
 
-#### *How stable is the JSON output?*
+#### *How stable is the JSON output? (TODO)*
 
 *\<Answer + schema contract\>*
+
+## *Glossary (TODO)*
+
+- A
+- B
 
 ## Appendix **I**: Using the `poetrycli` template
 
@@ -1265,6 +1378,7 @@ Expected:
 - Delete this "Appendix II" from the docs
 - You probably want to at least partially keep the rest of the documentation
 - Look for TODOs and *ITALICS* for places to edit
+- Not all topics and sections are relevant for every project: pick the ones you want, and maybe delete the rest
 - rename “mycli” references, usage examples, repo links
 - `CHANGELOG.md` (reset it to your new project)
 - `LICENSE` file and [README header](#license) if your project changes license/ownership
@@ -1277,11 +1391,6 @@ Once your project is real:
 - Remove `scripts/template.py` if you don’t use direct executable scripts
 - Remove `src/<pkg>/utils/template.py` once everyone knows the pattern
 - Tighten or relax Ruff ignores based on your team’s preferences
-
-## *Glossary*
-
-- A
-- B
 
 ---
 

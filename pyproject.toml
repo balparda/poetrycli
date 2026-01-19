@@ -5,6 +5,12 @@
 # TODO: FIRST pick PYTHON VERSION; there are AT LEAST 6 places in this file that depend on this
 
 ####################################################################################################
+[build-system]
+
+requires = ["poetry-core>=2.3"]
+build-backend = "poetry.core.masonry.api"
+
+####################################################################################################
 [project]
 
 name = "mycli"     # TODO: app name, and also rename src/mycli directory to match
@@ -17,6 +23,15 @@ authors = [
   { name = "BellaKeri", email = "BellaKeri@github.com" },
   # TODO: ... add authors ...
 ]
+
+keywords = [
+  "python",
+  "poetry",
+  "typer",
+  "rich",
+  "cli",
+  "template",
+]
 classifiers = [  # see: https://pypi.org/classifiers/
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.12",  # TODO: python VERSION; pick correct one
@@ -28,6 +43,25 @@ classifiers = [  # see: https://pypi.org/classifiers/
 requires-python = ">=3.12"  # TODO: python VERSION; pick correct one
 readme = "README.md"
 license-files = ["LICENSE"]
+
+dependencies = [
+
+  "typer>=0.21",   # if this changes, also change: [tool.poetry.dependencies] and .pre-commit-config.yaml
+  "rich>=14.2",    # if this changes, also change: .pre-commit-config.yaml
+  "platformdirs>=4.5",
+
+  # best place for project dependencies, if possible
+  # development-only dependencies go in the [tool.poetry.group.dev.dependencies] section below
+
+]
+
+####################################################################################################
+[project.scripts]
+
+# console scripts that will be installed when installing the package;
+# if you change/add a line here, re-run `poetry sync`
+
+mycli = "mycli.cli:app"  # TODO: rename `mycli` part
 
 ####################################################################################################
 [project.urls]
@@ -49,11 +83,10 @@ packages = [{ include = "mycli", from = "src" }]  # TODO: rename `mycli` part
 ####################################################################################################
 [tool.poetry.dependencies]
 
-python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
+# prefer to add dependencies inside the [project.dependencies] section
 
-rich = "^14.2"  # if this changes, also change: .pre-commit-config.yaml
+python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
 typer = {version = "^0.21", extras = ["all"]}  # if this changes, also change: .pre-commit-config.yaml
-platformdirs = "^4.5"
 
 [tool.poetry.group.dev.dependencies]
 
@@ -61,12 +94,13 @@ ruff = "~0.14.13"  # if this changes, also change: .pre-commit-config.yaml
 mypy = "~1.19.1"   # if this changes, also change: .pre-commit-config.yaml
 pytest = "^9.0"    # if this changes, also change: .pre-commit-config.yaml
 pytest-cov = "^7.0"
+pytest-flakefinder = "^1.1"
 pyright = "^1.1"
 pre-commit = "^4.5"
+pyinstrument = "^5.1"
 
-[tool.poetry.scripts]
-
-mycli = "mycli.cli:app"  # TODO: rename `mycli` part
+[tool.poetry.requires-plugins]
+poetry-plugin-export = "^1.10"
 
 ####################################################################################################
 [tool.ruff]
@@ -180,9 +214,25 @@ exclude = [
 ####################################################################################################
 [tool.pytest.ini_options]
 
-addopts = "-q"
+pythonpath = ["src"]
 testpaths = ["tests"]
+addopts = [
+  "-q",
+  "--strict-markers",
+]
 
+markers = [
+
+  "slow: test is slow (> 1s)",
+  "flaky: AVOID! - test is known to be flaky",
+  "stochastic: test is capable of failing (even if very unlikely)",
+
+  # define your own tags here; to run and de-select/select a tag do: `-m \"not slow\"` or `-m slow`
+  # mark python tests with decorator @pytest.mark.slow / @pytest.mark.<tag-name>
+
+]
+
+####################################################################################################
 [tool.coverage.run]
 omit = [
   "*/__init__.py",  # keep these free of real code!
