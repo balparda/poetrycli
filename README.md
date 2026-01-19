@@ -1,3 +1,5 @@
+<!-- SPDX-FileCopyrightText: Copyright 2026 Daniel Balparda <balparda@github.com> -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # poetrycli - Python/Poetry/Typer/Rich CLI Template
 
 ***TODO:*** *One-line description of what this CLI does and who it’s for. Change the title above.*
