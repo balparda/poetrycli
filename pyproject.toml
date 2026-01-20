@@ -34,13 +34,13 @@ keywords = [
 ]
 classifiers = [  # see: https://pypi.org/classifiers/
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.12",  # TODO: python VERSION; pick correct one
+  "Programming Language :: Python :: 3.14",  # TODO: python VERSION; pick correct one
   "Operating System :: OS Independent",
   "Topic :: Utilities"
   # TODO: ... add others ...
 ]
 
-requires-python = ">=3.12"  # TODO: python VERSION; pick correct one
+requires-python = ">=3.14"  # TODO: python VERSION; pick correct one
 readme = "README.md"
 license-files = [ "LICENSE" ]
 
@@ -89,7 +89,7 @@ include = [
 
 # prefer to add dependencies inside the [project.dependencies] section
 
-python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
+python = "^3.14"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
 typer = { version = "^0.21", extras = ["all"] }  # if this changes, also change: .pre-commit-config.yaml
 
 [tool.poetry.group.dev.dependencies]
@@ -110,7 +110,7 @@ poetry-plugin-export = "^1.10"
 ####################################################################################################
 [tool.ruff]
 
-target-version = "py312"  # TODO: python VERSION; pick correct one
+target-version = "py314"  # TODO: python VERSION; pick correct one
 line-length = 100
 indent-width = 2
 src = [ "scripts", "src", "tests", "tests_integration" ]
@@ -184,7 +184,7 @@ preview = true  # if you want new features being previewed
 ####################################################################################################
 [tool.mypy]
 
-python_version = "3.12"  # TODO: python VERSION; pick correct one
+python_version = "3.14"  # TODO: python VERSION; pick correct one
 mypy_path = [ "src" ]
 
 warn_return_any = true
@@ -204,7 +204,7 @@ strict = true
 [tool.pyright]
 
 typeCheckingMode = "strict"
-pythonVersion = "3.12"  # TODO: python VERSION; pick correct one
+pythonVersion = "3.14"  # TODO: python VERSION; pick correct one
 venvPath = "."
 venv = ".venv"
 

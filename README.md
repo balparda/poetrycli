@@ -130,7 +130,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
     - [New Projects](#new-projects)
       - [Rename the package + CLI entrypoint](#rename-the-package--cli-entrypoint)
       - [Update app name used for config paths](#update-app-name-used-for-config-paths)
-      - [Pick a Python version (skip if 3.12 is good)](#pick-a-python-version-skip-if-312-is-good)
+      - [Pick a Python version (skip if 3.14 is good)](#pick-a-python-version-skip-if-314-is-good)
       - [Customize CLI banner + top-level options](#customize-cli-banner--top-level-options)
       - [Optional: adjust style/lint strictness](#optional-adjust-stylelint-strictness)
     - [`poetrycli` Features explained](#poetrycli-features-explained)
@@ -199,7 +199,7 @@ pip3 install <your_pkg>
 
 ### Known dependencies (Prerequisites)
 
-- **[python 3.12](https://python.org/)** - [documentation](https://docs.python.org/3.12/)
+- **[python 3.14](https://python.org/)** - [documentation](https://docs.python.org/3.14/)
 - **[rich 14.2+](https://pypi.org/project/rich/)** - Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal - [documentation](https://rich.readthedocs.io/en/latest/)
 - **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
 - **[platformdirs 4.5+](https://pypi.org/project/platformdirs/)** - Determines appropriate platform-specific dirs
@@ -573,7 +573,7 @@ sudo apt-get install git python3 python3-dev python3-venv build-essential softwa
 
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install python3.12  # or python3.13 or python3.14 - TODO: pick a version
+sudo apt-get install python3.14  # or python3.12 or python3.13 - TODO: pick a version
 ```
 
 and on **Mac**:
@@ -583,7 +583,7 @@ brew update
 brew upgrade
 brew cleanup -s
 
-brew install git python@3.12  # or python3.13 or python3.14 - TODO: pick a version
+brew install git python@3.14  # or python3.12 or python3.13 - TODO: pick a version
 ```
 
 #### Install Poetry (recommended: `pipx`)
@@ -630,7 +630,7 @@ cd poetrycli
 From the repository root:
 
 ```sh
-poetry env use python3.12  # creates the .venv with the correct Python version - TODO: pick correct Python version
+poetry env use python3.14  # creates the .venv with the correct Python version - TODO: pick correct Python version
 poetry sync                # sync env to project's poetry.lock file
 poetry env info            # no-op: just to check that environment looks good
 poetry check               # no-op: make sure all pyproject.toml fields are being used correctly
@@ -1009,17 +1009,17 @@ APP_NAME = '<your_pkg>'  # TODO: change this to your app name
 
 Change `APP_NAME` to your app name so config ends up under the correct OS-specific directory.
 
-#### Pick a Python version (skip if 3.12 is good)
+#### Pick a Python version (skip if 3.14 is good)
 
-This template currently targets **Python 3.12** (or **Python 3.13** or **Python 3.14**). It may possibly work with more versions, but these ones the authors have tested. If you want a different Python version, update the “Python version cluster” in multiple places, *at least* update all of these:
+This template currently targets **Python 3.14** (or **Python 3.12** or **Python 3.13**). It may possibly work with more versions, but these ones the authors have tested. If you want a different Python version, update the “Python version cluster” in multiple places, *at least* update all of these:
 
 - `pyproject.toml`:
-  - [project.classifiers] (e.g., "Programming Language :: Python :: 3.12")
-  - [project.requires-python] (e.g., ">=3.12")
-  - [tool.poetry.dependencies].python (e.g., "^3.12")
-  - [tool.ruff].target-version (e.g., "py312")
-  - [tool.mypy].python_version (e.g., "3.12")
-  - [tool.pyright].pythonVersion (e.g., "3.12")
+  - [project.classifiers] (e.g., "Programming Language :: Python :: 3.14")
+  - [project.requires-python] (e.g., ">=3.14")
+  - [tool.poetry.dependencies].python (e.g., "^3.14")
+  - [tool.ruff].target-version (e.g., "py314")
+  - [tool.mypy].python_version (e.g., "3.14")
+  - [tool.pyright].pythonVersion (e.g., "3.14")
 - `.github/workflows/ci.yaml`: matrix `python-version`
 - `README.md` (this file): Python version references in install instructions
 
@@ -1250,7 +1250,7 @@ This checklist is designed to be **mechanical**: do every step, run the commands
 
 ### 0: Prerequisites (one-time per machine)
 
-- Install **Python 3.12** (or your chosen target version).
+- Install **Python 3.14** (or your chosen target version).
 - Install Poetry via `pipx`:
 
 ```sh
@@ -1298,7 +1298,7 @@ Under `[project]`:
 - `authors = [...]`
 - `license = ...`
 - `classifiers` (especially the Python version classifier)
-- `requires-python = ">=3.12"` (or your chosen version)
+- `requires-python = ">=3.14"` (or your chosen version)
 - `license-files = ["LICENSE"]` (keep unless you change licensing docs)
 
 Under `[project.urls]`:
