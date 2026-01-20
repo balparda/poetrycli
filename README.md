@@ -23,7 +23,7 @@
 - **MyPy** (and **Pyright/Pylance/typeguard**) for strict type checking
 - **Pytest + coverage** for tests
 - **pre-commit** + **GitHub Actions CI** to keep everything enforced automatically
-- **dependabot** to keep dependencies always up-to-date
+- **dependabot** + **codeql** to keep dependencies always up-to-date and security issues at bay
 
 The `poetrycli` repo is intentionally opinionated because it was built to help the authors (2-space indentation, single quotes, strict typing, “select ALL rules” linting are examples) but includes escape hatches and ***TODO*** markers to customize quickly. Started in Jan/2026, by ***Daniel Balparda***.
 
@@ -110,7 +110,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
         - [Git tag and commit](#git-tag-and-commit)
         - [Publish to PyPI](#publish-to-pypi)
     - [*Contributing (TODO)*](#contributing-todo)
-  - [*Security (TODO)*](#security-todo)
+  - [Security](#security)
     - [*Supply chain (TODO)*](#supply-chain-todo)
   - [*Reliability (TODO)*](#reliability-todo)
     - [*Operational guidance (TODO)*](#operational-guidance-todo)
@@ -514,7 +514,8 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 ├── .github/
 │   ├── dependabot.yaml        ⟸ Github dependency update pipeline
 │   └── workflows/
-│       └── ci.yaml            ⟸ Github CI pipeline
+│       ├── ci.yaml            ⟸ Github CI pipeline
+│       └── codeql.yml         ⟸ Github security scans and code quality pipeline
 ├── .vscode/
 │   └── settings.json          ⟸ VSCode configs
 ├── scripts/
@@ -883,9 +884,11 @@ Remember to update [CHANGELOG.md](CHANGELOG.md).
 - *See `CONTRIBUTING.md*`
 - *Code of conduct: `CODE_OF_CONDUCT.md`*
 
-## *Security (TODO)*
+## Security
 
 Please refer to the security policy in [SECURITY.md](SECURITY.md) for supported versions and how to report vulnerabilities.
+
+The project has a [**codeql**](https://codeql.github.com/docs/) config file in `.github/workflows/codeql.yaml` that weekly (defaulting to Fridays) scans the project for code quality and security issues. It will also run on all commits. Github security issues will be opened in the project if anything is found.
 
 ### *Supply chain (TODO)*
 

@@ -7,10 +7,10 @@ on:
 
   push:
     branches: [ "main" ]
-    
+
   pull_request:
     branches: [ "main" ]
-    
+
   schedule:
     - cron: '32 15 * * 5'
 
@@ -40,15 +40,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        
+
         - language: actions
           build-mode: none
-          
+
         - language: python
           build-mode: none
 
     steps:
-  
+
     - name: Checkout repository
       uses: actions/checkout@v4
 
