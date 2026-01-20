@@ -16,15 +16,18 @@ type:
 	poetry run mypy src
 
 test:
-	poetry run pytest
+	poetry run pytest -q tests
+
+integration:
+	poetry run pytest -q tests_integration
 
 cov:
 	poetry run pytest --cov=src --cov-report=term-missing
 
 flakes:
-	poetry run pytest --flake-finder --flake-runs=100
+	poetry run pytest --flake-finder --flake-runs=100 -q tests
 
 precommit:
 	poetry run pre-commit run --all-files
 
-ci: fmt lint type test precommit
+ci: fmt lint type test integration precommit

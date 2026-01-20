@@ -96,7 +96,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
     - [Testing](#testing)
       - [Unit tests / Coverage](#unit-tests--coverage)
       - [Instrumenting your code](#instrumenting-your-code)
-      - [*Integration / e2e tests (TODO)*](#integration--e2e-tests-todo)
+      - [Integration / e2e tests](#integration--e2e-tests)
       - [*Golden tests for CLI output (TODO)*](#golden-tests-for-cli-output-todo)
     - [Linting / formatting / static analysis](#linting--formatting--static-analysis)
       - [Type checking](#type-checking)
@@ -500,38 +500,45 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 
 ```txt
 .
-├── CHANGELOG.md             ⟸ latest changes/releases
-├── pyproject.toml           ⟸ most important configurations live here
+├── CHANGELOG.md               ⟸ latest changes/releases
 ├── LICENSE
-├── README.md                ⟸ this documentation
-├── SECURITY.md              ⟸ security policy
-├── .pre-commit-config.yaml  ⟸ pre-submit
+├── Makefile
+├── poetry.lock                ⟸ this is maintained by Poetry, do not manually edit
+├── pyproject.toml             ⟸ most important configurations live here
+├── README.md                  ⟸ this documentation
+├── SECURITY.md                ⟸ security policy
+├── requirements.txt
+├── .editorconfig
+├── .gitignore
+├── .pre-commit-config.yaml    ⟸ pre-submit
 ├── .github/
-│   ├── dependabot.yaml      ⟸ Github dependency update pipeline
+│   ├── dependabot.yaml        ⟸ Github dependency update pipeline
 │   └── workflows/
-│       └── ci.yaml          ⟸ Github CI pipeline
+│       └── ci.yaml            ⟸ Github CI pipeline
 ├── .vscode/
-│   └── settings.json        ⟸ VSCode configs
+│   └── settings.json          ⟸ VSCode configs
 ├── scripts/
-│   └── template.py          ⟸ Use template & directory for executable standalone scripts
+│   └── template.py            ⟸ Use template & directory for executable standalone scripts
 ├── src/
-│   └── <your_pkg>/          ⟸ change this directory's name (originally mycli)
+│   └── <your_pkg>/            ⟸ change this directory's name (originally mycli)
 │       ├── __init__.py
 │       ├── __main__.py
-│       ├── cli.py           ⟸ Main CLI app entry point (Main())
+│       ├── cli.py             ⟸ Main CLI app entry point (Main())
 │       ├── py.typed
 │       ├── core/
 │       │   ├── __init__.py
-│       │   └── example.py   ⟸ Business logic goes in this directory
+│       │   └── example.py     ⟸ Business logic goes in this directory
 │       ├── resources/
 │       │   ├── __init__.py
-│       │   └── config.py    ⟸ Project resources/files go in this directory
+│       │   └── config.py      ⟸ Project resources/files go in this directory
 │       └── utils/
 │           ├── __init__.py
-│           ├── logging.py   ⟸ Useful modules go in this directory; Logging logic for example
-│           └── template.py  ⟸ Use template for starting regular modules
-└── tests/
-    └── test_cli.py          ⟸ Testing goes in this directory
+│           ├── logging.py     ⟸ Useful modules go in this directory; Logging logic for example
+│           └── template.py    ⟸ Use template for starting regular modules
+├── tests/
+│   └── test_cli.py            ⟸ Unit-Testing goes in this directory
+└── tests_integration/
+    └── test_installed_cli.py  ⟸ Integration testing goes in this directory
 ```
 
 What each area is for:
@@ -686,8 +693,9 @@ Recommended VSCode extensions:
 #### Unit tests / Coverage
 
 ```sh
-make test               # plain test run
-poetry run pytest -vvv  # verbose test run
+make test               # plain test run, no integration tests
+make integration        # run the integration tests
+poetry run pytest -vvv  # verbose test run, includes integration tests
 
 make cov  # coverage run, equivalent to: poetry run pytest --cov=src --cov-report=term-missing
 ```
@@ -726,7 +734,7 @@ poetry run pytest -vvv -q --durations=20 -m slow        # check methods marked `
 You can search for flaky tests by running `make flakes`, which runs all tests 100 times. Or you can do more, like in the example:
 
 ```sh
-make flakes  # equivalent to: poetry run pytest --flake-finder --flake-runs=100
+make flakes  # equivalent to: poetry run pytest --flake-finder --flake-runs=100 -q tests
 poetry run pytest --flake-finder --flake-runs=10000 -m "not slow"
 ```
 
@@ -744,11 +752,15 @@ $ deactivate
 
 This will save a file `output1.html` to the project directory with the timings for all method calls. Make sure to **cleanup** these html files later.
 
-#### *Integration / e2e tests (TODO)*
+#### Integration / e2e tests
+
+There are integration tests that build a pip wheel and test the CLI.
 
 ```sh
-<integration test command>
+make integration
 ```
+
+They are slower, but are a part of the CL pipeline.
 
 #### *Golden tests for CLI output (TODO)*
 

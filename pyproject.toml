@@ -113,7 +113,7 @@ poetry-plugin-export = "^1.10"
 target-version = "py312"  # TODO: python VERSION; pick correct one
 line-length = 100
 indent-width = 2
-src = [ "scripts", "src", "tests" ]
+src = [ "scripts", "src", "tests", "tests_integration" ]
 
 [tool.ruff.format]
 
@@ -161,7 +161,8 @@ ignore = [
   "PLR0917",  # Too many positional arguments (N/5)
 
   "TRY003",  # Avoid specifying long messages outside the exception class
-  "EM102",   # Exception must not use an f-string literal, assign to variable firs
+  "EM101",   # Exception must not use a string literal, assign to variable first
+  "EM102",   # Exception must not use an f-string literal, assign to variable first
 
   "TD002",   # allow TODOs without authors
   "TD003",   # allow TODOs without bugs
@@ -178,6 +179,7 @@ preview = true  # if you want new features being previewed
 [tool.ruff.lint.per-file-ignores]
 
 "tests/**/*.py" = [ "S101" ]
+"tests_integration/**/*.py" = [ "S101" ]
 
 ####################################################################################################
 [tool.mypy]
@@ -206,7 +208,7 @@ pythonVersion = "3.12"  # TODO: python VERSION; pick correct one
 venvPath = "."
 venv = ".venv"
 
-include = [ "scripts", "src", "tests" ]
+include = [ "scripts", "src", "tests", "tests_integration" ]
 exclude = [
   "**/.venv",
   "**/__pycache__",
@@ -221,7 +223,7 @@ exclude = [
 [tool.pytest.ini_options]
 
 pythonpath = [ "src" ]
-testpaths = [ "tests" ]
+testpaths = [ "tests", "tests_integration" ]
 addopts = [
   "-q",
   "--strict-markers",
@@ -232,6 +234,7 @@ markers = [
   "slow: test is slow (> 1s)",
   "flaky: AVOID! - test is known to be flaky",
   "stochastic: test is capable of failing (even if very unlikely)",
+  "integration: integration test (installs wheel + runs console script)",
 
   # define your own tags here; to run and de-select/select a tag do: `-m \"not slow\"` or `-m slow`
   # mark python tests with decorator @pytest.mark.slow / @pytest.mark.<tag-name>
