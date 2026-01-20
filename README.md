@@ -515,7 +515,7 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 │   ├── dependabot.yaml        ⟸ Github dependency update pipeline
 │   └── workflows/
 │       ├── ci.yaml            ⟸ Github CI pipeline
-│       └── codeql.yml         ⟸ Github security scans and code quality pipeline
+│       └── codeql.yaml        ⟸ Github security scans and code quality pipeline
 ├── .vscode/
 │   └── settings.json          ⟸ VSCode configs
 ├── scripts/
