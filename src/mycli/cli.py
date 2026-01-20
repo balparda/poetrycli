@@ -66,6 +66,11 @@ def Main(
     count=True,
     help='Verbosity (nothing=ERROR, -v=WARNING, -vv=INFO, -vvv=DEBUG).',
   ),
+  color: bool | None = typer.Option(  # noqa: FBT001
+    None,
+    '--color/--no-color',
+    help='Force enable/disable colored output (respects NO_COLOR env var if not provided).',
+  ),
   foo: int = typer.Option(1000, '-f', '--foo', help='Some integer option.'),
   bar: str = typer.Option('str default', '-b', '--bar', help='Some string option.'),
 ) -> None:
@@ -75,7 +80,12 @@ def Main(
   if version:
     typer.echo(__version__)
     raise typer.Exit(0)
-  console: rich_console.Console = cli_logging.InitLogging(verbose)
+  console: rich_console.Console = cli_logging.InitLogging(
+    verbose,
+    color=color,
+    include_process=False,  # decide if you want process names in logs
+    soft_wrap=False,  # decide if you want soft wrapping of long lines
+  )
   console.print('[bold blue]**********************************************[/]')
   console.print(  # TODO: change your intro lines to taste
     '[bold blue]**[/]                 [bold yellow]MYCLI[/]                    [bold blue]**[/]',

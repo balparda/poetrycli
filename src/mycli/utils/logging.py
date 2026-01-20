@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import threading
 
 from rich import console as rich_console
@@ -13,7 +14,12 @@ from rich import logging as rich_logging
 _LOG_FORMAT_NO_PROCESS: str = '%(funcName)s: %(message)s'
 _LOG_FORMAT_WITH_PROCESS: str = '%(processName)s/' + _LOG_FORMAT_NO_PROCESS
 _LOG_FORMAT_DATETIME: str = '[%Y%m%d-%H:%M:%S]'  # e.g., [20240131-13:45:30]
-_LOG_LEVELS: list[int] = [logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG]
+_LOG_LEVELS: dict[int, int] = {
+  0: logging.ERROR,
+  1: logging.WARNING,
+  2: logging.INFO,
+  3: logging.DEBUG,
+}
 _LOG_COMMON_PROVIDERS: set[str] = {
   'werkzeug',
   'gunicorn.error',
@@ -54,6 +60,7 @@ def InitLogging(
   *,
   include_process: bool = False,
   soft_wrap: bool = False,
+  color: bool | None = False,
 ) -> rich_console.Console:
   """Initialize logger (with RichHandler) and get a rich.console.Console singleton.
 
@@ -70,6 +77,8 @@ def InitLogging(
     include_process (bool, optional): Whether to include process name in log output.
     soft_wrap (bool, optional): Whether to enable soft wrapping in the console.
         Default is False, and it means rich will hard-wrap long lines (by adding line breaks).
+    color (bool | None, optional): Whether to enable/disable color output in the console.
+        If None, respects NO_COLOR env var.
 
   Returns:
     rich.console.Console: The initialized console instance.
@@ -79,8 +88,16 @@ def InitLogging(
   with __console_lock:
     if __console_singleton is not None:
       return __console_singleton
-    logging_level: int = _LOG_LEVELS[max(0, min(verbosity, len(_LOG_LEVELS) - 1))]
-    console = rich_console.Console(soft_wrap=soft_wrap)
+    # set level
+    logging_level: int = _LOG_LEVELS.get(verbosity, logging.ERROR)
+    # respect NO_COLOR unless the caller has already decided (treat env presence as "disable color")
+    no_color: bool
+    if os.getenv('NO_COLOR') is None and color is None:
+      no_color = False  # enable color by default
+    else:
+      no_color = (os.getenv('NO_COLOR') is not None) if color is None else (not color)
+    # create console and configure logging
+    console = rich_console.Console(soft_wrap=soft_wrap, no_color=no_color)
     logging.basicConfig(
       level=logging_level,
       format=_LOG_FORMAT_WITH_PROCESS if include_process else _LOG_FORMAT_NO_PROCESS,
@@ -94,8 +111,9 @@ def InitLogging(
           show_path=True,
         ),
       ],
-      force=True,
-    )  # force=True to override any previous logging config
+      force=True,  # force=True to override any previous logging config
+    )
+    # configure common loggers
     logging.captureWarnings(True)
     for name in _LOG_COMMON_PROVIDERS:
       log: logging.Logger = logging.getLogger(name)
@@ -103,5 +121,8 @@ def InitLogging(
       log.propagate = True
       log.setLevel(logging_level)
     __console_singleton = console  # need a global statement to re-bind this one
-    logging.info(f'Logging initialized at level {logging.getLevelName(logging_level)}')
+    logging.info(
+      f'Logging initialized at level {logging.getLevelName(logging_level)} / '
+      f'{"NO " if no_color else ""}COLOR'
+    )
     return console

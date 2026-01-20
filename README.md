@@ -60,7 +60,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [*Workflow 1 (TODO)*](#workflow-1-todo)
       - [*Workflow 2 (TODO)*](#workflow-2-todo)
     - [*Command structure (TODO)*](#command-structure-todo)
-    - [*Global flags (TODO)*](#global-flags-todo)
+    - [Global flags](#global-flags)
     - [*Commands overview (TODO)*](#commands-overview-todo)
     - [*Configuration (TODO)*](#configuration-todo)
       - [*Config file locations (TODO)*](#config-file-locations-todo)
@@ -70,7 +70,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
     - [*Input / output behavior (TODO)*](#input--output-behavior-todo)
       - [*`stdin` and piping (TODO)*](#stdin-and-piping-todo)
       - [*Output formats (TODO)*](#output-formats-todo)
-      - [*Color and formatting (TODO)*](#color-and-formatting-todo)
+      - [Color and formatting](#color-and-formatting)
       - [*Exit codes (TODO)*](#exit-codes-todo)
     - [*Logging and observability (TODO)*](#logging-and-observability-todo)
     - [*Safety features (TODO)*](#safety-features-todo)
@@ -301,18 +301,14 @@ General shape:
 <project> [global flags] <command> [command flags] [args]
 ```
 
-### *Global flags (TODO)*
+### Global flags
 
 | Flag | Description | Default |
 | --- | --- | --- |
-| -h, --help | Show help | |
-| --version | Show version | |
-| -v, --verbose | Increase log verbosity | \<off\> |
-| --quiet | Reduce output | \<off\> |
-| --no-color | Disable colorized output | \<auto\> |
-| --json | Emit machine-readable JSON | \<off\> |
-
-Add only the flags you actually support.
+| `-h`, `--help` | Show help | \<off\> |
+| `--version` | Show version and exit | \<off\> |
+| `-v`, `-vv`, `-vvv`, `--verbose` | Verbosity (nothing=*ERROR*, `-v`=*WARNING*, `-vv`=*INFO*, `-vvv`=*DEBUG*) | *ERROR* |
+| `--color`/`--no-color` | Force enable/disable colored output (respects NO_COLOR env var if not provided) | `--color` |
 
 ### *Commands overview (TODO)*
 
@@ -418,10 +414,15 @@ cat input.txt | <project> <command> --from-stdin
 - *Human-readable (default)*
 - *JSON (`--json`) for automation and scripting*
 
-#### *Color and formatting (TODO)*
+#### Color and formatting
 
-- *Respects NO_COLOR (recommended)*
-- *`--no-color` / `--color`=auto|always|never (if supported)*
+Rich can provide color output in logging and in CLI output. App:
+
+- Respects `NO_COLOR` environment variable
+- Has `--no-color` / `--color` flag: if given will override the `NO_COLOR` environment variable
+- If there is no environment variable and no flag is given, default to having color
+
+To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/latest/markup.html).
 
 #### *Exit codes (TODO)*
 
