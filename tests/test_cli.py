@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections import abc
 from unittest import mock
 
 import pytest
@@ -13,26 +14,61 @@ from typer import testing
 
 from mycli import cli
 from mycli.core import example
+from mycli.utils import logging as cli_logging
 
-_runner = testing.CliRunner()
+
+def _CallCLI(args: list[str]) -> click_testing.Result:
+  """Call the CLI with args.
+
+  Args:
+      args (list[str]): CLI arguments.
+
+  Returns:
+      click_testing.Result: CLI result.
+
+  """
+  with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
+    # we suppress type checks here because CliRunner.invoke expects a click.Command,
+    # but we are passing a typer.Typer (which is a subclass of click.Command)/8
+    return testing.CliRunner().invoke(cli.app, args)
 
 
-def test_version() -> None:
+@pytest.fixture(autouse=True)
+def reset_cli_logging_singletons() -> abc.Generator[None, None, None]:
+  """Reset global console/logging state between tests.
+
+  The CLI callback initializes a global Rich console singleton via InitLogging().
+  Tests invoke the CLI multiple times across test cases, so we must reset that
+  singleton to keep tests isolated.
+  """
+  cli_logging.ResetConsole()
+  yield  # noqa: PT022
+
+
+def test_version_flag() -> None:
   """Test."""
-  result: click_testing.Result = _runner.invoke(cli.app, ['--version'])
+  result: click_testing.Result = _CallCLI(['--version'])
   assert result.exit_code == 0
   assert result.stdout.strip() == '0.1.0'
-  result = _runner.invoke(cli.app, ['--version', 'hello'])
+
+
+def test_version_flag_ignores_extra_args() -> None:
+  """Test."""
+  result: click_testing.Result = _CallCLI(['--version', 'hello'])
   assert result.exit_code == 0
   assert result.stdout.strip() == '0.1.0'
 
 
-def test_hello() -> None:
+def test_hello_default_name() -> None:
   """Test."""
-  result: click_testing.Result = _runner.invoke(cli.app, ['hello'])
+  result: click_testing.Result = _CallCLI(['hello'])
   assert result.exit_code == 0
   assert 'Hello, World!' in result.stdout
-  result = _runner.invoke(cli.app, ['hello', 'Ada'])
+
+
+def test_hello_custom_name() -> None:
+  """Test."""
+  result: click_testing.Result = _CallCLI(['hello', 'Ada'])
   assert result.exit_code == 0
   assert 'Hello, Ada!' in result.stdout
 
@@ -53,6 +89,18 @@ def _printed_value(console_mock: mock.Mock) -> object:
   # console.print is a Mock; .call_args is (args, kwargs)
   args, _kwargs = console_mock.print.call_args
   return args[0] if args else None
+
+
+def _assert_random_str_printed_value(printed: object, expected_prefix: str) -> None:
+  """Assert RandomStr output matches CLI behavior.
+
+  RandomStr prints the generated string plus a suffix that depends on whether color is enabled.
+  We don't want tests to depend on NO_COLOR env var or rich console internals, so accept either.
+  """
+  assert isinstance(printed, str)
+  assert printed.startswith(expected_prefix)
+  suffix: str = printed[len(expected_prefix) :]
+  assert suffix in {' - in color', ' - no colors'}
 
 
 # -------------------------------------------------------------------------------------------------
@@ -102,8 +150,7 @@ def test_random_num_prints_expected_integer(
   console_factory_mock.return_value = console
   randbelow_mock.return_value = randbelow_return
   # Act
-  result: click_testing.Result = _runner.invoke(
-    cli.app,
+  result: click_testing.Result = _CallCLI(
     ['random', 'num', '--min', str(min_), '--max', str(max_)],
   )
   # Assert
@@ -139,8 +186,7 @@ def test_random_num_rejects_invalid_range(
   - In this failure path, randbelow should never be called and we should not print anything.
   """
   console_factory_mock.return_value = mock.Mock()
-  result: click_testing.Result = _runner.invoke(
-    cli.app,
+  result: click_testing.Result = _CallCLI(
     ['random', 'num', '--min', str(min_), '--max', str(max_)],
   )
   assert result.exit_code != 0
@@ -186,7 +232,7 @@ def test_random_str_default_alphabet_prints_expected(
   console_factory_mock.return_value = console
   # Each call to secrets.choice returns the next item from choices
   choice_mock.side_effect = choices
-  result: click_testing.Result = _runner.invoke(cli.app, ['random', 'str', '--length', str(length)])
+  result: click_testing.Result = _CallCLI(['random', 'str', '--length', str(length)])
   assert result.exit_code == 0, result.output
   # We should call choice exactly 'length' times
   assert choice_mock.call_count == length
@@ -199,7 +245,7 @@ def test_random_str_default_alphabet_prints_expected(
   for call in choice_mock.call_args_list:
     assert call[0][0] == first_call_arg
   console.print.assert_called_once()
-  assert _printed_value(console) == expected
+  _assert_random_str_printed_value(_printed_value(console), expected)
 
 
 @pytest.mark.slow  # <-- example of marking a test as slow
@@ -229,8 +275,7 @@ def test_random_str_custom_alphabet_is_used(
   console = mock.Mock()
   console_factory_mock.return_value = console
   choice_mock.side_effect = choices
-  result: click_testing.Result = _runner.invoke(
-    cli.app,
+  result: click_testing.Result = _CallCLI(
     ['random', 'str', '--alphabet', alphabet, '--length', str(length)],
   )
   assert result.exit_code == 0, result.output
@@ -239,7 +284,7 @@ def test_random_str_custom_alphabet_is_used(
   for call in choice_mock.call_args_list:
     assert call[0][0] == alphabet
   console.print.assert_called_once()
-  assert _printed_value(console) == expected
+  _assert_random_str_printed_value(_printed_value(console), expected)
 
 
 # @typeguard.suppress_type_checks  # <-- example of suppressing typeguard checks
@@ -265,7 +310,7 @@ def test_random_str_rejects_non_positive_length(
   - Therefore: secrets.choice should not be called, and no console printing should happen.
   """
   console_factory_mock.return_value = mock.Mock()
-  result: click_testing.Result = _runner.invoke(cli.app, ['random', 'str', '--length', bad_length])
+  result: click_testing.Result = _CallCLI(['random', 'str', '--length', bad_length])
   assert result.exit_code != 0
   choice_mock.assert_not_called()
   console_factory_mock.return_value.print.assert_not_called()

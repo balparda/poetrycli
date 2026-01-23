@@ -43,6 +43,7 @@ Notes
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass
 
 import typer
 from rich import console as rich_console
@@ -56,9 +57,21 @@ from .utils import logging as cli_logging
 app = typer.Typer(add_completion=True, no_args_is_help=True)
 
 
+@dataclass(kw_only=True, slots=True, frozen=True)
+class CLIConfig:
+  """CLI global context, storing the configuration."""
+
+  verbose: int
+  color: bool | None
+  foo: int
+  bar: str
+
+
 @app.callback(invoke_without_command=True)  # have only one; this is the "constructor"
 def Main(
-  version: bool = typer.Option(False, '--version', help='Show version and exit.'),  # noqa: FBT001
+  *,
+  ctx: typer.Context,  # global context
+  version: bool = typer.Option(False, '--version', help='Show version and exit.'),
   verbose: int = typer.Option(
     0,
     '-v',
@@ -66,7 +79,7 @@ def Main(
     count=True,
     help='Verbosity (nothing=ERROR, -v=WARNING, -vv=INFO, -vvv=DEBUG).',
   ),
-  color: bool | None = typer.Option(  # noqa: FBT001
+  color: bool | None = typer.Option(
     None,
     '--color/--no-color',
     help='Force enable/disable colored output (respects NO_COLOR env var if not provided).',
@@ -80,12 +93,16 @@ def Main(
   if version:
     typer.echo(__version__)
     raise typer.Exit(0)
-  console: rich_console.Console = cli_logging.InitLogging(
+  console: rich_console.Console
+  console, verbose, color = cli_logging.InitLogging(
     verbose,
     color=color,
     include_process=False,  # decide if you want process names in logs
     soft_wrap=False,  # decide if you want soft wrapping of long lines
   )
+  # create context with the arguments we received
+  ctx.obj = CLIConfig(verbose=verbose, color=color, foo=foo, bar=bar)
+  # print / log / etc
   console.print('[bold blue]**********************************************[/]')
   console.print(  # TODO: change your intro lines to taste
     '[bold blue]**[/]                 [bold yellow]MYCLI[/]                    [bold blue]**[/]',
@@ -105,12 +122,13 @@ def ConfigPath() -> None:
 
 
 @app.command()  # create one per command
-def Hello(name: str = typer.Argument('World')) -> None:
+def Hello(ctx: typer.Context, name: str = typer.Argument('World')) -> None:
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Say hello."""
+  config: CLIConfig = ctx.obj  # get application global config
   console: rich_console.Console = cli_logging.Console()
-  console.print(f'Hello, {name}!')
+  console.print(f'{config.foo} times "Hello, {name}!"')
 
 
 # Subcommand group: random
@@ -120,6 +138,7 @@ app.add_typer(_random_app, name='random', help='Random utilities.')
 
 @_random_app.command('num')
 def RandomNum(
+  *,
   min_: int = typer.Option(0, '--min', help='Minimum value (inclusive).'),
   max_: int = typer.Option(100, '--max', help='Maximum value (inclusive).'),
 ) -> None:
@@ -134,6 +153,8 @@ def RandomNum(
 
 @_random_app.command('str')
 def RandomStr(
+  *,
+  ctx: typer.Context,
   length: int = typer.Option(16, '--length', '-n', min=1, help='String length.'),
   alphabet: str | None = typer.Option(
     None,
@@ -144,8 +165,11 @@ def RandomStr(
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Generate a random string."""
+  config: CLIConfig = ctx.obj  # get application global config
   console: rich_console.Console = cli_logging.Console()
-  console.print(example.RandomStr(length, alphabet))
+  console.print(
+    example.RandomStr(length, alphabet) + (' - in color' if config.color else ' - no colors')
+  )
 
 
 def Run() -> None:

@@ -61,9 +61,10 @@ def InitLogging(
   include_process: bool = False,
   soft_wrap: bool = False,
   color: bool | None = False,
-) -> rich_console.Console:
+) -> tuple[rich_console.Console, int, bool]:
   """Initialize logger (with RichHandler) and get a rich.console.Console singleton.
 
+  This method will also return the actual decided values for verbosity and color use.
   If you have a CLI app that uses this, its pytests should call `ResetConsole()` in a fixture, like:
 
       from mycli import logging
@@ -81,15 +82,22 @@ def InitLogging(
         If None, respects NO_COLOR env var.
 
   Returns:
-    rich.console.Console: The initialized console instance.
+    tuple[rich_console.Console, int, bool]:
+        (The initialized console instance, actual log level, actual color use)
+
+  Raises:
+    RuntimeError: if you call this more than once
 
   """
   global __console_singleton  # noqa: PLW0603
   with __console_lock:
     if __console_singleton is not None:
-      return __console_singleton
+      raise RuntimeError(
+        'calling InitLogging() more than once is forbidden; '
+        'use Console() to get a console after first creation'
+      )
     # set level
-    logging_level: int = _LOG_LEVELS.get(verbosity, logging.ERROR)
+    logging_level: int = _LOG_LEVELS.get(min(verbosity, 3), logging.ERROR)
     # respect NO_COLOR unless the caller has already decided (treat env presence as "disable color")
     no_color: bool
     if os.getenv('NO_COLOR') is None and color is None:
@@ -125,4 +133,4 @@ def InitLogging(
       f'Logging initialized at level {logging.getLevelName(logging_level)} / '
       f'{"NO " if no_color else ""}COLOR'
     )
-    return console
+    return (console, logging_level, not no_color)
