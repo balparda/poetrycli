@@ -61,7 +61,7 @@ dependencies = [
 # console scripts that will be installed when installing the package;
 # if you change/add a line here, re-run `poetry sync`
 
-mycli = "mycli.cli:app"  # TODO: rename `mycli` part
+mycli = "mycli.cli:Run"  # TODO: rename `mycli` part
 
 ####################################################################################################
 [project.urls]
@@ -113,7 +113,17 @@ poetry-plugin-export = "^1.10"
 target-version = "py312"  # TODO: python VERSION; pick correct one
 line-length = 100
 indent-width = 2
+
 src = [ "scripts", "src", "tests", "tests_integration" ]
+
+extend-exclude = [
+  "typings/**/__init__.pyi",  # typically stub files created by pyright
+]
+
+# Strongly recommended if you run Ruff via pre-commit (or any tool that passes
+# file paths explicitly): ensures excluded files stay excluded even when passed
+# on the command line.
+force-exclude = true
 
 [tool.ruff.format]
 
@@ -124,6 +134,10 @@ docstring-code-format = true
 [tool.ruff.lint.flake8-quotes]
 
 inline-quotes = "single"
+
+[tool.ruff.lint.pycodestyle]
+
+ignore-overlong-task-comments = true
 
 ####################################################################################################
 [tool.ruff.lint]
@@ -155,7 +169,10 @@ ignore = [
   "COM812",  # missing-trailing-comma: may cause conflicts when used with the formatter
 
   "TC002",    # checks for third-party imports that are only used for type annotations
+  "TC003",    # Move standard library import `collections.abc` into a type-checking block
 
+  "E731",     # Do not assign a `lambda` expression, use a `def`
+  "FBT001",   # Boolean-typed positional argument in function definition
   "FBT003",   # allows boolean positional value in function call
   "PLR0913",  # Too many arguments in function definition (N > 5)
   "PLR0917",  # Too many positional arguments (N/5)
@@ -172,14 +189,19 @@ ignore = [
   "LOG015",  # allows for calls into top-level logging methods
   "G004",    # allows logging statements to use f-string
 ]
-# ignore = [ "E125", "E129", "E501"]
+
+task-tags = ["noqa", "cspell", "type", "pragma", "pyright"]
 
 preview = true  # if you want new features being previewed
 
 [tool.ruff.lint.per-file-ignores]
 
-"tests/**/*.py" = [ "S101" ]
-"tests_integration/**/*.py" = [ "S101" ]
+"tests*/**/*.py" = [
+  "S101",     # Use of `assert` detected
+  "PT018",    # Assertion should be broken down into multiple parts
+  "SLF001",   # Private member accessed
+  "PLR2004",  # Magic value used in comparison, consider replacing <V> with a constant variable
+]
 
 ####################################################################################################
 [tool.mypy]
@@ -217,6 +239,12 @@ exclude = [
   "**/.ruff_cache",
   "**/dist",
   "**/build",
+]
+
+executionEnvironments = [
+  # Any tests* trees: disable the private-usage diagnostic.
+  { root = "tests", reportPrivateUsage = "none" },
+  { root = "tests_integration", reportPrivateUsage = "none" },
 ]
 
 ####################################################################################################

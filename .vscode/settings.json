@@ -117,6 +117,7 @@
     "mypyc",
     "njpwerner",
     "nodeenv",
+    "noqa",
     "nosetests",
     "numpy",
     "orjson",

@@ -8,7 +8,7 @@ import secrets
 import string
 
 
-def RandomNum(min_: int, max_: int) -> int:
+def RandomNum(min_: int, max_: int, /) -> int:
   """Generate a random integer.
 
   Args:
@@ -22,7 +22,7 @@ def RandomNum(min_: int, max_: int) -> int:
   return secrets.randbelow(int(max_) - int(min_) + 1) + int(min_)
 
 
-def RandomStr(length: int, alphabet: str | None) -> str:
+def RandomStr(length: int, alphabet: str | None, /) -> str:
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Generate a random string.
