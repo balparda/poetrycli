@@ -1,13 +1,11 @@
 // SPDX-FileCopyrightText: Copyright 2026 Daniel Balparda <balparda@github.com>
 // SPDX-License-Identifier: Apache-2.0
-
 {
-
   // --- Python / Poetry interpreter ---
   // Prefer an in-project venv: `poetry config virtualenvs.in-project true`
+  "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.terminal.activateEnvironment": true,
-
   // --- Pylance / type checking ---
   // You can also (or instead) control this via [tool.pyright] in pyproject.toml.
   "python.analysis.diagnosticsSource": "Pylance",
@@ -16,7 +14,6 @@
   "python.analysis.supportDocstringTemplate": false,
   "pylint.enabled": false,
   "flake8.enabled": false,
-
   // --- autoDocstring ---
   // Use Google-style docstrings --- add "autoDocstring – Python Docstring Generator" extension.
   "autoDocstring.docstringFormat": "google",
@@ -25,38 +22,41 @@
   "autoDocstring.includeName": false,
   "autoDocstring.guessTypes": true,
   "autoDocstring.quoteStyle": "tripleDouble",
-
   // --- Testing ---
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["tests"],
-
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
   // --- Formatting + linting (Ruff) ---
+  "editor.defaultFormatter": "charliermarsh.ruff",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
   // Old python.linting.* / pylint / flake8 settings are deprecated in VS Code.
   // Use the Ruff extension and configure behavior via pyproject.toml.
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
-
     // Let Ruff do: autofix + import sorting via code actions.
     // "explicit" prevents unexpected bulk changes on every save; you can switch to true if you prefer.
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
     },
-
     "editor.insertSpaces": true,
     "editor.tabSize": 2
   },
-
   // Ensure Ruff uses the project's environment (important with Poetry).
   "ruff.importStrategy": "fromEnvironment",
-  "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"],
-
+  "ruff.interpreter": [
+    "${workspaceFolder}/.venv/bin/python"
+  ],
   // keep files tidy
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.eol": "\n",
-
   // cspell (custom dictionary)
   "cSpell.words": [
     "abstra",
@@ -73,6 +73,7 @@
     "cffi",
     "cfgv",
     "charliermarsh",
+    "clibase",
     "codz",
     "colorama",
     "commonmark",
@@ -172,5 +173,4 @@
     "yourcli",
     "yzhang"
   ]
-
 }

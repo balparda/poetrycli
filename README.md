@@ -517,6 +517,7 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 │       ├── ci.yaml            ⟸ Github CI pipeline
 │       └── codeql.yaml        ⟸ Github security scans and code quality pipeline
 ├── .vscode/
+│   ├── extensions.json
 │   └── settings.json          ⟸ VSCode configs
 ├── scripts/
 │   └── template.py            ⟸ Use template & directory for executable standalone scripts
