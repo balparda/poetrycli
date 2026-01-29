@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
+import dataclasses
 import io
 import logging
-import re
 
 import click
 import pytest
@@ -14,7 +14,6 @@ import typer
 from click import testing as click_testing
 from rich import console as rich_console
 
-from mycli import mycli
 from mycli.cli import clibase
 from mycli.utils import logging as cli_logging
 
@@ -122,24 +121,25 @@ def test_CLIErrorGuard_with_ctx_prints_message_when_verbose_lt_INFO() -> None:
   assert 'boom' in out
 
 
-def test_mycli_markdown_command_executes(monkeypatch: pytest.MonkeyPatch) -> None:
-  """Cover the mycli.Markdown command body lines."""
+def test_CLIErrorGuard_with_custom_config() -> None:
+  """Test CLIErrorGuard with a custom CLIConfig subclass."""
+
+  @dataclasses.dataclass(kw_only=True, slots=True, frozen=True)
+  class CustomConfig(clibase.CLIConfig):
+    custom_field: str
+
   buf = io.StringIO()
   c = rich_console.Console(file=buf, force_terminal=False, color_system=None, record=True)
-  monkeypatch.setattr(cli_logging, 'Console', lambda: c)
-  monkeypatch.setattr(clibase, 'GenerateTyperHelpMarkdown', lambda *_a, **_k: 'DOC')  # pyright: ignore[reportUnknownLambdaType, reportUnknownArgumentType]
-  # Create a mock context object
-  cmd = click.Command('markdown', callback=lambda: None)
-  ctx = typer.Context(cmd, info_name='markdown')
-  ctx.obj = mycli.MyCLIConfig(
-    console=c,
-    verbose=0,
-    color=None,
-    foo=0,
-    bar='',
-  )
-  mycli.Markdown(ctx=ctx)
-  assert 'DOC' in c.export_text()
+  cmd = click.Command('test', callback=lambda: None)
+  ctx = typer.Context(cmd, info_name='test')
+  ctx.obj = CustomConfig(console=c, verbose=0, color=None, custom_field='value')
+
+  @clibase.CLIErrorGuard
+  def _test_func(*, ctx: typer.Context) -> None:
+    pass
+
+  _test_func(ctx=ctx)
+  # If it didn't crash, the test passed
 
 
 class _DynamicGroup(click.Group):
@@ -188,15 +188,28 @@ def test_generate_help_for_simple_app() -> None:
   assert '```' in md
 
 
-def test_generate_help_includes_real_app_sections() -> None:
-  """Test."""
-  # use the real mycli app to ensure function walks real commands
-  md: str = clibase.GenerateTyperHelpMarkdown(mycli.app, prog_name='mycli', heading_level=1)
-  # basic sanity checks
-  assert 'mycli' in md
-  # ensure at least one known command exists
-  assert re.search(r'`mycli` .*Command-Line Interface', md)
-  assert 'markdown' in md
+def test_generate_help_with_nested_groups() -> None:
+  """Test GenerateTyperHelpMarkdown with nested command groups."""
+  app = typer.Typer()
+  sub_app = typer.Typer()
+
+  @sub_app.command()
+  def nested() -> None:  # pyright: ignore[reportUnusedFunction]
+    """Print a nested command."""
+    print('nested')  # noqa: T201
+
+  app.add_typer(sub_app, name='sub')
+
+  @app.command()
+  def top() -> None:  # pyright: ignore[reportUnusedFunction]
+    """Print a top-level command."""
+    print('top')  # noqa: T201
+
+  md: str = clibase.GenerateTyperHelpMarkdown(app, prog_name='testprog', heading_level=1)
+  # Verify the markdown contains both top-level and nested commands
+  assert 'testprog' in md
+  assert 'top' in md
+  assert 'sub' in md
 
 
 def test_generate_help_markdown_skips_invalid_commands(monkeypatch: pytest.MonkeyPatch) -> None:

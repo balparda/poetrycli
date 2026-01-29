@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
+import pathlib
 from collections import abc
 from unittest import mock
 
 import pytest
 import typeguard
+import typer
 from click import testing as click_testing
 from typer import testing
 
@@ -50,6 +52,22 @@ def test_version_flag() -> None:
   result: click_testing.Result = _CallCLI(['--version'])
   assert result.exit_code == 0
   assert result.stdout.strip() == '0.1.0'
+
+
+def test_version_flag_raises_exit() -> None:
+  """Test version flag raises typer.Exit with exit code 0."""
+  ctx = mock.Mock(spec=typer.Context)
+  with typeguard.suppress_type_checks():
+    with pytest.raises(typer.Exit) as exc_info:
+      mycli.Main(ctx=ctx, version=True, verbose=0, color=None, foo=1000, bar='str default')
+    assert exc_info.value.exit_code == 0
+
+
+def test_run_function() -> None:
+  """Test Run function calls app."""
+  with mock.patch.object(mycli, 'app') as app_mock:
+    mycli.Run()
+    app_mock.assert_called_once()
 
 
 def test_version_flag_ignores_extra_args() -> None:
@@ -317,3 +335,30 @@ def test_random_str_rejects_non_positive_length(
   with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
     # this method "works" but typeguard complains about int/float mix
     assert example.RandomNum(1, 1.1) == 1  # type: ignore
+
+
+@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('mycli.mycli.config.GetConfigPath')
+def test_config_path_prints_path(
+  get_config_path_mock: mock.Mock,
+  console_factory_mock: mock.Mock,
+) -> None:
+  """Test config-path command prints the config path."""
+  console = mock.Mock()
+  console_factory_mock.return_value = console
+  mock_path = pathlib.Path('/mock/config/mycli/config.toml')
+  get_config_path_mock.return_value = mock_path
+  result: click_testing.Result = _CallCLI(['configpath'])
+  assert result.exit_code == 0, result.output
+  console.print.assert_called_once_with(str(mock_path))
+
+
+def test_markdown_command_generates_docs() -> None:
+  """Test markdown command generates documentation."""
+  result: click_testing.Result = _CallCLI(['markdown'])
+  assert result.exit_code == 0, result.output
+  # Verify it contains markdown-like content
+  assert 'mycli' in result.stdout
+  assert '#' in result.stdout  # markdown headers
+  # Verify it mentions at least one known command
+  assert 'hello' in result.stdout or 'random' in result.stdout
