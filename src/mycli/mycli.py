@@ -82,7 +82,10 @@ def Main(
   color: bool | None = typer.Option(
     None,
     '--color/--no-color',
-    help='Force enable/disable colored output (respects NO_COLOR env var if not provided).',
+    help=(
+      'Force enable/disable colored output (respects NO_COLOR env var if not provided). '
+      'Defaults to having colors.'  # state default because None default means docs don't show it
+    ),
   ),
   foo: int = typer.Option(1000, '-f', '--foo', help='Some integer option.'),
   bar: str = typer.Option('str default', '-b', '--bar', help='Some string option.'),

@@ -17,7 +17,7 @@ Notes
 
 from __future__ import annotations
 
-from mycli import cli
+from mycli import mycli
 
 
 def Main() -> int:
@@ -27,7 +27,7 @@ def Main() -> int:
     int: Exit code
 
   """
-  cli.app()
+  mycli.app()
   return 0
 
 

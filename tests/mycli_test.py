@@ -12,7 +12,7 @@ import typeguard
 from click import testing as click_testing
 from typer import testing
 
-from mycli import cli
+from mycli import mycli
 from mycli.core import example
 from mycli.utils import logging as cli_logging
 
@@ -29,8 +29,8 @@ def _CallCLI(args: list[str]) -> click_testing.Result:
   """
   with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
     # we suppress type checks here because CliRunner.invoke expects a click.Command,
-    # but we are passing a typer.Typer (which is a subclass of click.Command)/8
-    return testing.CliRunner().invoke(cli.app, args)
+    # but we are passing a typer.Typer (which is a subclass of click.Command)
+    return testing.CliRunner().invoke(mycli.app, args)
 
 
 @pytest.fixture(autouse=True)
@@ -129,7 +129,7 @@ def _assert_random_str_printed_value(printed: object, expected_prefix: str) -> N
   ],
 )
 @mock.patch('mycli.core.example.secrets.randbelow')
-@mock.patch('mycli.cli.cli_logging.Console')
+@mock.patch('mycli.mycli.cli_logging.Console')
 def test_random_num_prints_expected_integer(
   console_factory_mock: mock.Mock,
   randbelow_mock: mock.Mock,
@@ -171,7 +171,7 @@ def test_random_num_prints_expected_integer(
   ],
 )
 @mock.patch('mycli.core.example.secrets.randbelow')
-@mock.patch('mycli.cli.cli_logging.Console')
+@mock.patch('mycli.mycli.cli_logging.Console')
 def test_random_num_rejects_invalid_range(
   console_factory_mock: mock.Mock,
   randbelow_mock: mock.Mock,
@@ -213,7 +213,7 @@ def test_random_num_rejects_invalid_range(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.cli.cli_logging.Console')
+@mock.patch('mycli.mycli.cli_logging.Console')
 def test_random_str_default_alphabet_prints_expected(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
@@ -257,7 +257,7 @@ def test_random_str_default_alphabet_prints_expected(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.cli.cli_logging.Console')
+@mock.patch('mycli.mycli.cli_logging.Console')
 def test_random_str_custom_alphabet_is_used(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
@@ -296,7 +296,7 @@ def test_random_str_custom_alphabet_is_used(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.cli.cli_logging.Console')
+@mock.patch('mycli.mycli.cli_logging.Console')
 def test_random_str_rejects_non_positive_length(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
