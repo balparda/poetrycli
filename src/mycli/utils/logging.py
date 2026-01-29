@@ -11,6 +11,7 @@ import threading
 from rich import console as rich_console
 from rich import logging as rich_logging
 
+# Logging
 _LOG_FORMAT_NO_PROCESS: str = '%(funcName)s: %(message)s'
 _LOG_FORMAT_WITH_PROCESS: str = '%(processName)s/' + _LOG_FORMAT_NO_PROCESS
 _LOG_FORMAT_DATETIME: str = '[%Y%m%d-%H:%M:%S]'  # e.g., [20240131-13:45:30]
@@ -99,11 +100,11 @@ def InitLogging(
     # set level
     logging_level: int = _LOG_LEVELS.get(min(verbosity, 3), logging.ERROR)
     # respect NO_COLOR unless the caller has already decided (treat env presence as "disable color")
-    no_color: bool
-    if os.getenv('NO_COLOR') is None and color is None:
-      no_color = False  # enable color by default
-    else:
-      no_color = (os.getenv('NO_COLOR') is not None) if color is None else (not color)
+    no_color: bool = (
+      False
+      if (os.getenv('NO_COLOR') is None and color is None)
+      else ((os.getenv('NO_COLOR') is not None) if color is None else (not color))
+    )
     # create console and configure logging
     console = rich_console.Console(soft_wrap=soft_wrap, no_color=no_color)
     logging.basicConfig(
