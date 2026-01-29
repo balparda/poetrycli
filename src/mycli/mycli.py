@@ -49,26 +49,32 @@ import typer
 from rich import console as rich_console
 
 from . import __version__
+from .cli import clibase
 from .core import example
 from .resources import config
 from .utils import logging as cli_logging
+
+
+@dataclass(kw_only=True, slots=True, frozen=True)
+class MyCLIConfig(clibase.CLIConfig):
+  """MyCLI global context, storing the configuration."""
+
+  foo: int
+  bar: str
+
 
 # CLI app setup, this is an important object and can be imported elsewhere and called
 app = typer.Typer(add_completion=True, no_args_is_help=True)
 
 
-@dataclass(kw_only=True, slots=True, frozen=True)
-class CLIConfig:
-  """CLI global context, storing the configuration."""
-
-  verbose: int
-  color: bool | None
-  foo: int
-  bar: str
+def Run() -> None:
+  """Run the CLI."""
+  app()
 
 
 @app.callback(invoke_without_command=True)  # have only one; this is the "constructor"
-def Main(
+@clibase.CLIErrorGuard
+def Main(  # documentation is help/epilog/args # noqa: D103
   *,
   ctx: typer.Context,  # global context
   version: bool = typer.Option(False, '--version', help='Show version and exit.'),
@@ -78,6 +84,8 @@ def Main(
     '--verbose',
     count=True,
     help='Verbosity (nothing=ERROR, -v=WARNING, -vv=INFO, -vvv=DEBUG).',
+    min=0,
+    max=3,
   ),
   color: bool | None = typer.Option(
     None,
@@ -90,9 +98,6 @@ def Main(
   foo: int = typer.Option(1000, '-f', '--foo', help='Some integer option.'),
   bar: str = typer.Option('str default', '-b', '--bar', help='Some string option.'),
 ) -> None:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
-  """Set things up; Main CLI entry point."""  # noqa: DOC501
   if version:
     typer.echo(__version__)
     raise typer.Exit(0)
@@ -104,7 +109,7 @@ def Main(
     soft_wrap=False,  # decide if you want soft wrapping of long lines
   )
   # create context with the arguments we received
-  ctx.obj = CLIConfig(verbose=verbose, color=color, foo=foo, bar=bar)
+  ctx.obj = MyCLIConfig(console=console, verbose=verbose, color=color, foo=foo, bar=bar)
   # print / log / etc
   console.print('[bold blue]**********************************************[/]')
   console.print(  # TODO: change your intro lines to taste
@@ -113,6 +118,17 @@ def Main(
   console.print('[bold blue]**   balparda@gmail.com (Daniel Balparda)   **[/]')
   console.print('[bold blue]**********************************************[/]')
   logging.warning(f'Will do foo={foo} and bar={bar!r}')
+
+
+@app.command(
+  'markdown',
+  help='Emit Markdown docs for the CLI (see README.md section "Creating a New Version").',
+  epilog=('Example:\n\n\n\n$ poetry run mycli markdown > mycli.md\n\n<<saves CLI doc>>'),
+)
+@clibase.CLIErrorGuard
+def Markdown(*, ctx: typer.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+  config: MyCLIConfig = ctx.obj
+  config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'))
 
 
 @app.command()  # create one per command
@@ -129,7 +145,7 @@ def Hello(ctx: typer.Context, name: str = typer.Argument('World')) -> None:
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Say hello."""
-  config: CLIConfig = ctx.obj  # get application global config
+  config: MyCLIConfig = ctx.obj  # get application global config
   console: rich_console.Console = cli_logging.Console()
   console.print(f'{config.foo} times "Hello, {name}!"')
 
@@ -168,13 +184,8 @@ def RandomStr(
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Generate a random string."""
-  config: CLIConfig = ctx.obj  # get application global config
+  config: MyCLIConfig = ctx.obj  # get application global config
   console: rich_console.Console = cli_logging.Console()
   console.print(
     example.RandomStr(length, alphabet) + (' - in color' if config.color else ' - no colors')
   )
-
-
-def Run() -> None:
-  """Run the CLI."""
-  app()
