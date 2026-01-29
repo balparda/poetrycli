@@ -47,7 +47,7 @@ license-files = [ "LICENSE" ]
 dependencies = [
 
   "typer>=0.21",   # if this changes, also change: [tool.poetry.dependencies] and .pre-commit-config.yaml
-  "rich>=14.2",    # if this changes, also change: .pre-commit-config.yaml
+  "rich>=14.3",    # if this changes, also change: .pre-commit-config.yaml
   "platformdirs>=4.5",
 
   # best place for project dependencies, if possible
@@ -59,7 +59,15 @@ dependencies = [
 [project.scripts]
 
 # console scripts that will be installed when installing the package;
-# if you change/add a line here, re-run `poetry sync`
+# if you change/add a line here also edit [tool.poetry.scripts] below and re-run `poetry sync`
+
+mycli = "mycli.cli:Run"  # TODO: rename `mycli` part
+
+####################################################################################################
+[tool.poetry.scripts]
+
+# poetry/poetry-core still relies on this section for wheel entry points in some versions;
+# keep this in sync with [project.scripts] above
 
 mycli = "mycli.cli:Run"  # TODO: rename `mycli` part
 
@@ -94,7 +102,7 @@ typer = { version = "^0.21", extras = ["all"] }  # if this changes, also change:
 
 [tool.poetry.group.dev.dependencies]
 
-ruff = "~0.14.13"  # if this changes, also change: .pre-commit-config.yaml
+ruff = "~0.14.14"  # if this changes, also change: .pre-commit-config.yaml
 mypy = "~1.19.1"   # if this changes, also change: .pre-commit-config.yaml
 pytest = "^9.0"    # if this changes, also change: .pre-commit-config.yaml
 pytest-cov = "^7.0"
@@ -178,12 +186,13 @@ ignore = [
   "PLR0917",  # Too many positional arguments (N/5)
 
   "TRY003",  # Avoid specifying long messages outside the exception class
+  "TRY300",  # Consider moving this statement to an `else` block
   "EM101",   # Exception must not use a string literal, assign to variable first
   "EM102",   # Exception must not use an f-string literal, assign to variable first
 
   "TD002",   # allow TODOs without authors
   "TD003",   # allow TODOs without bugs
-  "FIX002",  # fix the todos...  # TODO: remove this line: you usually want this
+  "FIX002",  # fix the todos... if you want to still see them in VSCode: "Todo Tree" extension (Gruntfuggly)  # TODO: remove this line: you usually want this
   "PGH003",  # allow ignoring type issues without giving extra codes
 
   "LOG015",  # allows for calls into top-level logging methods
@@ -231,6 +240,7 @@ venvPath = "."
 venv = ".venv"
 
 include = [ "scripts", "src", "tests", "tests_integration" ]
+extraPaths = [ ".", "src" ]  # needed to find tests/ directory modules
 exclude = [
   "**/.venv",
   "**/__pycache__",

@@ -5,7 +5,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version
-    rev: v0.14.13
+    rev: v0.14.14
     hooks:
       # Run the linter
       - id: ruff-check
@@ -18,4 +18,4 @@ repos:
     hooks:
       # Run the type checker
       - id: mypy
-        additional_dependencies: [pytest==9.0, rich==14.2, typer==0.21]
+        additional_dependencies: [pytest==9.0, rich==14.3, typer==0.21]
