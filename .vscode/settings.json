@@ -163,6 +163,7 @@
     "richhandler",
     "riscv",
     "ropeproject",
+    "saferandom",
     "scrapy",
     "sdist",
     "shellingham",

@@ -10,10 +10,10 @@ import pytest
 import typeguard
 import typer
 from click import testing as click_testing
+from transcrypto.utils import logging as cli_logging
 from typer import testing
 
 from mycli import mycli
-from mycli.utils import logging as cli_logging
 
 
 @pytest.fixture(autouse=True)

@@ -47,11 +47,11 @@ from dataclasses import dataclass
 
 import typer
 from rich import console as rich_console
+from transcrypto.cli import clibase
+from transcrypto.utils import logging as cli_logging
 
 from . import __version__
-from .cli import clibase
-from .resources import config
-from .utils import logging as cli_logging
+from .resources import config as config_resources
 
 
 @dataclass(kw_only=True, slots=True, frozen=True)
@@ -125,24 +125,21 @@ def Markdown(*, ctx: typer.Context) -> None:  # documentation is help/epilog/arg
   config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'))
 
 
-@app.command()  # create one per command
-def ConfigPath() -> None:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
-  """Print the config file path."""
-  console: rich_console.Console = cli_logging.Console()
-  console.print(str(config.GetConfigPath()))
+@app.command(help='Print the config file path.')  # create one per command
+@clibase.CLIErrorGuard
+def ConfigPath(*, ctx: typer.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+  config: MyCLIConfig = ctx.obj
+  config.console.print(str(config_resources.GetConfigPath()))
 
 
-@app.command()  # create one per command
-def Hello(ctx: typer.Context, name: str = typer.Argument('World')) -> None:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
-  """Say hello."""
+@app.command(help='Say hello.')  # create one per command
+@clibase.CLIErrorGuard
+def Hello(  # documentation is help/epilog/args # noqa: D103
+  *, ctx: typer.Context, name: str = typer.Argument('World')
+) -> None:
   logging.info('Saying hello to %s', name)
   config: MyCLIConfig = ctx.obj  # get application global config
-  console: rich_console.Console = cli_logging.Console()
-  console.print(f'{config.foo} times "Hello, {name}!"')
+  config.console.print(f'{config.foo} times "Hello, {name}!"')
 
 
 # Import CLI modules to register their commands with the app

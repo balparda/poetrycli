@@ -10,9 +10,9 @@ from unittest import mock
 import pytest
 import typeguard
 from click import testing as click_testing
+from transcrypto.utils import logging as cli_logging
 
 from mycli.core import example
-from mycli.utils import logging as cli_logging
 from tests import mycli_test
 
 

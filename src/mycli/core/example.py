@@ -7,6 +7,8 @@ from __future__ import annotations
 import secrets
 import string
 
+from transcrypto.utils import saferandom
+
 
 def RandomNum(min_: int, max_: int, /) -> int:
   """Generate a random integer.
@@ -19,12 +21,10 @@ def RandomNum(min_: int, max_: int, /) -> int:
       int: A random integer between min_ and max_ inclusive.
 
   """
-  return secrets.randbelow(int(max_) - int(min_) + 1) + int(min_)
+  return saferandom.RandInt(min_, max_)
 
 
 def RandomStr(length: int, alphabet: str | None, /) -> str:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
   """Generate a random string.
 
   Args:
