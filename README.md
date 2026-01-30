@@ -137,7 +137,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [Optional: adjust style/lint strictness](#optional-adjust-stylelint-strictness)
     - [`poetrycli` Features explained](#poetrycli-features-explained)
       - [CLI design (Typer)](#cli-design-typer)
-      - [Rich logging + Console singleton (`utils/logging.py`)](#rich-logging--console-singleton-utilsloggingpy)
+      - [Rich logging + Console singleton (`transcrypto`)](#rich-logging--console-singleton-transcrypto)
       - [Separation of CLI and business logic](#separation-of-cli-and-business-logic)
       - [Config path helper (`resources/config.py`)](#config-path-helper-resourcesconfigpy)
       - [Strict linting + formatting with Ruff (pyproject.toml)](#strict-linting--formatting-with-ruff-pyprojecttoml)
@@ -483,7 +483,6 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 │       ├── py.typed
 │       ├── cli/
 │       │   ├── __init__.py
-│       │   ├── clibase.py        ⟸ Base/reusable CLI functionality
 │       │   └── randomcommand.py  ⟸ CLI commands implementation, to keep `mycli.py` clean
 │       ├── core/
 │       │   ├── __init__.py
@@ -493,7 +492,6 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 │       │   └── config.py         ⟸ Project resources/files go in this directory
 │       └── utils/
 │           ├── __init__.py
-│           ├── logging.py        ⟸ Useful modules go in this directory; Logging logic for example
 │           └── template.py       ⟸ Use template for starting regular modules
 ├── tests/                        ⟸ Unit-Testing goes in this directory
 │   ├── mycli_test.py
@@ -507,7 +505,6 @@ What each area is for:
 - `src/<your_pkg>/cli.py`: **Typer app** definition, top-level callback (**Main**), and all **commands/subcommands**.
 - `src/<your_pkg>/core/example.py`: **“Business logic”** layer. CLI commands call into here. This is the main testable logic layer.
 - `src/<your_pkg>/utils/template.py`: A template module showing a recommended docstring structure for **new modules**.
-- `src/<your_pkg>/utils/logging.py`: Rich-based **logging** config + a **Console** singleton for consistent output everywhere.
 - `src/<your_pkg>/resources/config.py`: **“Where is my config file?”** logic using platformdirs.
 - `tests/test_cli.py`: Comprehensive CLI **tests** using Typer’s CliRunner, pytest.mark.parametrize, and unittest.mock.patch.
 - `scripts/template.py`: A template for **“directly executable scripts”** (includes a shebang).
@@ -1068,11 +1065,13 @@ _random_app = typer.Typer(no_args_is_help=True)
 app.add_typer(_random_app, name='random', help='Random utilities.')
 ```
 
-#### Rich logging + Console singleton (`utils/logging.py`)
+#### Rich logging + Console singleton (`transcrypto`)
 
-This is a key opinionated feature of the template. `Console()` returns the global singleton if initialized, otherwise returns a fallback `rich.console.Console()`. This allows any command do:
+Logging and console singleton functionality is provided by the **transcrypto** library (`transcrypto.utils.logging`). `Console()` returns the global singleton if initialized, otherwise returns a fallback `rich.console.Console()`. This allows any command do:
 
 ```py
+from transcrypto.utils import logging as cli_logging
+
 console = cli_logging.Console()
 console.print(...)
 ```
