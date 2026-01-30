@@ -29,6 +29,8 @@ keywords = [
   "poetry",
   "typer",
   "rich",
+  "transcrypto",
+  "crypto",
   "cli",
   "template",
 ]
