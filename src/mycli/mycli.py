@@ -64,7 +64,7 @@ class MyCLIConfig(clibase.CLIConfig):
 
 
 # CLI app setup, this is an important object and can be imported elsewhere and called
-app = typer.Typer(add_completion=True, no_args_is_help=True)
+app = typer.Typer(add_completion=True, no_args_is_help=True, help='MyCLI does amazing things!')
 
 
 def Run() -> None:
@@ -110,14 +110,9 @@ def Main(  # documentation is help/epilog/args # noqa: D103
   )
   # create context with the arguments we received
   ctx.obj = MyCLIConfig(console=console, verbose=verbose, color=color, foo=foo, bar=bar)
-  # print / log / etc
-  console.print('[bold blue]**********************************************[/]')
-  console.print(  # TODO: change your intro lines to taste
-    '[bold blue]**[/]                 [bold yellow]MYCLI[/]                    [bold blue]**[/]',
-  )
-  console.print('[bold blue]**   balparda@gmail.com (Daniel Balparda)   **[/]')
-  console.print('[bold blue]**********************************************[/]')
-  logging.warning(f'Will do foo={foo} and bar={bar!r}')
+  # even though this is a convenient place to print(), beware that this runs even when
+  # a subcommand is invoked; so prefer logging.debug/info/warning/error instead of print();
+  # for example, if you run `markdown` subcommand, this will still print and spoil the output
 
 
 @app.command(
@@ -145,6 +140,7 @@ def Hello(ctx: typer.Context, name: str = typer.Argument('World')) -> None:
   # leave this docstring without args/return/raise sections as it shows up in `--help`
   # one way or another the args are well documented in the CLI help and in the code above
   """Say hello."""
+  logging.info('Saying hello to %s', name)
   config: MyCLIConfig = ctx.obj  # get application global config
   console: rich_console.Console = cli_logging.Console()
   console.print(f'{config.foo} times "Hello, {name}!"')

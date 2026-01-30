@@ -61,7 +61,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [*Workflow 2 (TODO)*](#workflow-2-todo)
     - [*Command structure (TODO)*](#command-structure-todo)
     - [Global flags](#global-flags)
-    - [*Commands overview (TODO)*](#commands-overview-todo)
+    - [CLI Commands Documentation](#cli-commands-documentation)
     - [*Configuration (TODO)*](#configuration-todo)
       - [*Config file locations (TODO)*](#config-file-locations-todo)
       - [*Configuration schema (TODO)*](#configuration-schema-todo)
@@ -107,6 +107,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
         - [Bump project version (patch/minor/major)](#bump-project-version-patchminormajor)
         - [Update dependency versions](#update-dependency-versions)
         - [Exporting the `requirements.txt` file](#exporting-the-requirementstxt-file)
+        - [CI and docs](#ci-and-docs)
         - [Git tag and commit](#git-tag-and-commit)
         - [Publish to PyPI](#publish-to-pypi)
     - [*Contributing (TODO)*](#contributing-todo)
@@ -153,13 +154,13 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [3.3: If you change Python version…](#33-if-you-change-python-version)
     - [4: Sync the runtime `__version__`](#4-sync-the-runtime-__version__)
     - [5: Update config app name](#5-update-config-app-name)
-    - [6: Customize the CLI banner / intro lines](#6-customize-the-cli-banner--intro-lines)
-    - [7: Review lint policy (Ruff)](#7-review-lint-policy-ruff)
-    - [8: Keep tool versions aligned across files](#8-keep-tool-versions-aligned-across-files)
-    - [9: Run the full validation suite (before first commit)](#9-run-the-full-validation-suite-before-first-commit)
-    - [10: First release workflow (suggested)](#10-first-release-workflow-suggested)
-    - [11:  Update README](#11--update-readme)
-    - [12: “Cleanup”](#12-cleanup)
+    - [6: Review lint policy (Ruff)](#6-review-lint-policy-ruff)
+    - [7: Run the full validation suite (before first commit)](#7-run-the-full-validation-suite-before-first-commit)
+    - [8: First release workflow (suggested)](#8-first-release-workflow-suggested)
+    - [9:  Update README](#9--update-readme)
+    - [10: Customize the CLI global flags](#10-customize-the-cli-global-flags)
+    - [11: “Cleanup”](#11-cleanup)
+    - [12: Done: Start building your project](#12-done-start-building-your-project)
 
 ## License
 
@@ -310,61 +311,11 @@ General shape:
 | `-v`, `-vv`, `-vvv`, `--verbose` | Verbosity (nothing=*ERROR*, `-v`=*WARNING*, `-vv`=*INFO*, `-vvv`=*DEBUG*) | *ERROR* |
 | `--color`/`--no-color` | Force enable/disable colored output (respects NO_COLOR env var if not provided) | `--color` |
 
-### *Commands overview (TODO)*
+### CLI Commands Documentation
 
-| Command | Description |
-| --- | --- |
-| `<command1>` | |
-| `< command2>` | |
-| `help` | Show help for commands |
+This software auto-generates docs for CLI apps:
 
-```sh
-Command reference template
-
-Use this template for each command:
-
-<command>
-Purpose:
-
-Syntax
-
-<project> <command> [flags] <arg1> [arg2...]
-
-Arguments
-
-- <arg1>:
-- <arg2>:
-
-Flags
-
-| Flag | Type | Description | Default |
-| --- | --- | --- | --- |
-| --foo | string | | <default> |
-| --bar | bool | | <false> |
-
-Examples
-
-<project> <command> <arg1>
-<project> <command> <arg1> --foo value
-
-Output
-
-- Human mode:
-- JSON mode (--json): \<top-level fields / schema link\>
-- Files created:
-
-Exit codes
-
-- 0: Success
-- 2: Usage error (invalid args)
-- 3: Runtime error (network, filesystem, etc.)
-- \<other\>:
-
-Common errors
-
-- \<error message\> →
-- \<error message\> →
-```
+- [**`mycli`** documentation](mycli.md)
 
 ### *Configuration (TODO)*
 
@@ -503,6 +454,7 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 ├── CHANGELOG.md               ⟸ latest changes/releases
 ├── LICENSE
 ├── Makefile
+├── mycli.md                   ⟸ this is auto-generated CLI doc (by `make docs` or `make ci`)
 ├── poetry.lock                ⟸ this is maintained by Poetry, do not manually edit
 ├── pyproject.toml             ⟸ most important configurations live here
 ├── README.md                  ⟸ this documentation
@@ -510,7 +462,7 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 ├── requirements.txt
 ├── .editorconfig
 ├── .gitignore
-├── .pre-commit-config.yaml    ⟸ pre-submit
+├── .pre-commit-config.yaml    ⟸ pre-submit configs
 ├── .github/
 │   ├── dependabot.yaml        ⟸ Github dependency update pipeline
 │   └── workflows/
@@ -841,12 +793,7 @@ poetry add -G dev "pkg>=1.2.3"  # adds dep to dev code ("group" dev)
 # also remember: "pkg@^1.2.3" = latest 1.* ; "pkg@~1.2.3" = latest 1.2.* ; "pkg@1.2.3" exact
 ```
 
-Keep tool versions aligned. This repo pins:
-
-- `ruff` and `mypy` versions in `pyproject.toml`
-- and also pins them in `.pre-commit-config.yaml`
-
-If you bump one, bump the other (otherwise you’ll get “works in CI/IDE but fails in pre-commit” mismatches). Remember to check your diffs before submitting (especially `poetry.lock`) to avoid surprises!
+Keep tool versions aligned. Remember to check your diffs before submitting (especially `poetry.lock`) to avoid surprises!
 
 ##### Exporting the `requirements.txt` file
 
@@ -857,6 +804,10 @@ poetry export --format requirements.txt --without-hashes --output requirements.t
 ```
 
 Tip: If you want auto-export every time the lockfile changes, consider a plugin like `poetry-auto-export` (optional policy choice).
+
+##### CI and docs
+
+Make sure to run `make docs` or even better `make ci`. Both will update the CLI markdown docs.
 
 ##### Git tag and commit
 
@@ -1220,7 +1171,7 @@ Rationale: these files should remain “thin” and are usually not meaningful c
 
 #### Pre-commit checks
 
-File `.pre-commit-config.yaml` defines hooks for Ruff lint (`ruff-check`), Ruff format (`ruff-format`), and MyPy (`mypy`). Install hooks:
+File `.pre-commit-config.yaml` defines pre-submit hooks:
 
 ```sh
 poetry run pre-commit install
@@ -1231,10 +1182,6 @@ Run on all files:
 ```sh
 make precommit  # equivalent to: poetry run pre-commit run --all-files
 ```
-
-Important: pre-commit runs tools in its own isolated environments pinned by `rev:` so if you bump Ruff/MyPy versions in `pyproject.toml` remember to update `.pre-commit-config.yaml` too.
-
-[Ruff pre-commit reference.](https://github.com/astral-sh/ruff-pre-commit)
 
 #### CI (GitHub Actions)
 
@@ -1315,6 +1262,7 @@ Under `[project.urls]`:
 - Under `[tool.poetry.scripts]`: `mycli = "mycli.cli:app"` → update both sides:
   - CLI command name (left)
   - import path (right) to match your renamed package
+- Do the exact same under `[project.scripts]`
 - In `.github/workflows/ci.yaml` update `mycli` name in `typeguard-packages`
 
 #### 3.3: If you change Python version…
@@ -1347,15 +1295,7 @@ In `src/<your_pkg>/resources/config.py`: `APP_NAME = 'mycli'` → your app name
 
 This affects where the OS-native config directory lives.
 
-### 6: Customize the CLI banner / intro lines
-
-In `src/<your_pkg>/cli.py`, update:
-
-- the “MYCLI” banner text
-- the email/name line
-- remove example “foo/bar” options if you don’t want them (or repurpose them).
-
-### 7: Review lint policy (Ruff)
+### 6: Review lint policy (Ruff)
 
 This template uses `select = ["ALL"]` and then ignores a curated list. Decide:
 
@@ -1366,17 +1306,7 @@ If you want to keep *PascalCase* methods:
 
 - Ensure `N802` remains ignored (that’s the “function name should be lowercase” complaint).
 
-### 8: Keep tool versions aligned across files
-
-- `pyproject.toml` dev deps (ruff/mypy/pytest etc.)
-- `.pre-commit-config.yaml` rev pins + mypy `additional_dependencies` pins
-
-Rule of thumb:
-
-- If you bump **ruff** or **mypy** in `pyproject.toml`, bump their pre-commit `rev` too.
-- If you bump runtime deps like **rich**/**typer**/**pytest**, update **mypy** hook’s `additional_dependencies` pins.
-
-### 9: Run the full validation suite (before first commit)
+### 7: Run the full validation suite (before first commit)
 
 From repo root:
 
@@ -1393,13 +1323,13 @@ Expected:
 - Pytest: green
 - Coverage: acceptable (note: init/template files are omitted by design)  ￼
 
-### 10: First release workflow (suggested)
+### 8: First release workflow (suggested)
 
 1. Ensure version is correct: confirm in `pyproject.toml` + `__init__.py`
-1. Run the full validation suite ([Step 9](#9-run-the-full-validation-suite-before-first-commit))
+1. Run the full validation suite ([Step 7](#7-run-the-full-validation-suite-before-first-commit))
 1. Commit, tag, and publish per your release process
 
-### 11:  Update README
+### 9:  Update README
 
 - Delete this "Appendix II" from the docs
 - You probably want to at least partially keep the rest of the documentation
@@ -1410,7 +1340,15 @@ Expected:
 - `SECURITY.md` (make sure contact details are up to date)
 - `LICENSE` file and [README header](#license) if your project changes license/ownership
 
-### 12: “Cleanup”
+### 10: Customize the CLI global flags
+
+In `src/<your_pkg>/cli.py`, update:
+
+- the `MyCLIConfig` structure
+- global options in `Main()` (you probably want to leave `--version`, `--verbose` and `--color`)
+- `help=` and `epilog=` for your commands and options
+
+### 11: “Cleanup”
 
 Once your project is real:
 
@@ -1418,6 +1356,8 @@ Once your project is real:
 - Remove `scripts/template.py` if you don’t use direct executable scripts
 - Remove `src/<pkg>/utils/template.py` once everyone knows the pattern
 - Tighten or relax Ruff ignores based on your team’s preferences
+
+### 12: Done: Start building your project
 
 ---
 
