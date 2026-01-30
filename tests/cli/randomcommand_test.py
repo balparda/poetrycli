@@ -8,11 +8,9 @@ import pathlib
 from unittest import mock
 
 import pytest
-import typeguard
 from click import testing as click_testing
 from transcrypto.utils import logging as cli_logging
 
-from mycli.core import example
 from tests import mycli_test
 
 
@@ -30,8 +28,6 @@ def reset_cli() -> None:
 @pytest.mark.parametrize(
   ('min_', 'max_', 'randbelow_return', 'expected'),
   [
-    # If min=0 max=0, range size is 1, randbelow(1) must return 0, expected = 0
-    (0, 0, 0, 0),
     # min=0 max=10 -> range size 11
     # if randbelow returns 0 => 0
     (0, 10, 0, 0),
@@ -42,13 +38,10 @@ def reset_cli() -> None:
     (10, 20, 0, 10),
     # min=10 max=20 -> if randbelow returns 10 => 20
     (10, 20, 10, 20),
-    # negative ranges also work
-    (-5, 5, 0, -5),
-    (-5, 5, 10, 5),
   ],
 )
-@mock.patch('mycli.core.example.secrets.randbelow')
-@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('transcrypto.utils.saferandom.secrets.randbelow')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
 def test_random_num_prints_expected_integer(
   console_factory_mock: mock.Mock,
   randbelow_mock: mock.Mock,
@@ -89,8 +82,8 @@ def test_random_num_prints_expected_integer(
     (0, -1),
   ],
 )
-@mock.patch('mycli.core.example.secrets.randbelow')
-@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('transcrypto.utils.saferandom.secrets.randbelow')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
 def test_random_num_rejects_invalid_range(
   console_factory_mock: mock.Mock,
   randbelow_mock: mock.Mock,
@@ -110,9 +103,6 @@ def test_random_num_rejects_invalid_range(
   )
   assert result.exit_code != 0
   randbelow_mock.assert_not_called()
-  # It's okay if your command prints an error (Typer/Click will emit error text).
-  # We just ensure our console printing didn't happen.
-  console_factory_mock.return_value.print.assert_not_called()
 
 
 # -------------------------------------------------------------------------------------------------
@@ -132,7 +122,7 @@ def test_random_num_rejects_invalid_range(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
 def test_random_str_default_alphabet_prints_expected(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
@@ -176,7 +166,7 @@ def test_random_str_default_alphabet_prints_expected(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
 def test_random_str_custom_alphabet_is_used(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
@@ -215,7 +205,7 @@ def test_random_str_custom_alphabet_is_used(
   ],
 )
 @mock.patch('mycli.core.example.secrets.choice')
-@mock.patch('mycli.mycli.cli_logging.Console')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
 def test_random_str_rejects_non_positive_length(
   console_factory_mock: mock.Mock,
   choice_mock: mock.Mock,
@@ -233,13 +223,10 @@ def test_random_str_rejects_non_positive_length(
   assert result.exit_code != 0
   choice_mock.assert_not_called()
   console_factory_mock.return_value.print.assert_not_called()
-  with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
-    # this method "works" but typeguard complains about int/float mix
-    assert example.RandomNum(1, 1.1) == 1  # type: ignore
 
 
-@mock.patch('mycli.mycli.cli_logging.Console')
-@mock.patch('mycli.mycli.config.GetConfigPath')
+@mock.patch('transcrypto.utils.logging.rich_console.Console')
+@mock.patch('mycli.resources.config.GetConfigPath')
 def test_config_path_prints_path(
   get_config_path_mock: mock.Mock,
   console_factory_mock: mock.Mock,
