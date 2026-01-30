@@ -50,7 +50,6 @@ from rich import console as rich_console
 
 from . import __version__
 from .cli import clibase
-from .core import example
 from .resources import config
 from .utils import logging as cli_logging
 
@@ -146,42 +145,5 @@ def Hello(ctx: typer.Context, name: str = typer.Argument('World')) -> None:
   console.print(f'{config.foo} times "Hello, {name}!"')
 
 
-# Subcommand group: random
-_random_app = typer.Typer(no_args_is_help=True)
-app.add_typer(_random_app, name='random', help='Random utilities.')
-
-
-@_random_app.command('num')
-def RandomNum(
-  *,
-  min_: int = typer.Option(0, '--min', help='Minimum value (inclusive).'),
-  max_: int = typer.Option(100, '--max', help='Maximum value (inclusive).'),
-) -> None:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
-  """Generate a random integer."""  # noqa: DOC501
-  if max_ < min_:
-    raise typer.BadParameter(f'--max ({max_}) must be >= --min ({min_})')
-  console: rich_console.Console = cli_logging.Console()
-  console.print(example.RandomNum(min_, max_))
-
-
-@_random_app.command('str')
-def RandomStr(
-  *,
-  ctx: typer.Context,
-  length: int = typer.Option(16, '--length', '-n', min=1, help='String length.'),
-  alphabet: str | None = typer.Option(
-    None,
-    '--alphabet',
-    help='Custom alphabet to sample from (defaults to [a-zA-Z0-9]).',
-  ),
-) -> None:
-  # leave this docstring without args/return/raise sections as it shows up in `--help`
-  # one way or another the args are well documented in the CLI help and in the code above
-  """Generate a random string."""
-  config: MyCLIConfig = ctx.obj  # get application global config
-  console: rich_console.Console = cli_logging.Console()
-  console.print(
-    example.RandomStr(length, alphabet) + (' - in color' if config.color else ' - no colors')
-  )
+# Import CLI modules to register their commands with the app
+from mycli.cli import randomcommand  # pyright: ignore[reportUnusedImport] # noqa: E402, F401

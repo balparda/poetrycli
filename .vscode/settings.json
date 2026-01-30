@@ -159,6 +159,7 @@
     "pyupgrade",
     "pyyaml",
     "randbelow",
+    "randomcommand",
     "richhandler",
     "riscv",
     "ropeproject",

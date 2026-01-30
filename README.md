@@ -451,48 +451,53 @@ To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/
 
 ```txt
 .
-├── CHANGELOG.md               ⟸ latest changes/releases
+├── CHANGELOG.md                  ⟸ latest changes/releases
 ├── LICENSE
 ├── Makefile
-├── mycli.md                   ⟸ this is auto-generated CLI doc (by `make docs` or `make ci`)
-├── poetry.lock                ⟸ this is maintained by Poetry, do not manually edit
-├── pyproject.toml             ⟸ most important configurations live here
-├── README.md                  ⟸ this documentation
-├── SECURITY.md                ⟸ security policy
+├── mycli.md                      ⟸ this is auto-generated CLI doc (by `make docs` or `make ci`)
+├── poetry.lock                   ⟸ this is maintained by Poetry, do not manually edit
+├── pyproject.toml                ⟸ most important configurations live here
+├── README.md                     ⟸ this documentation
+├── SECURITY.md                   ⟸ security policy
 ├── requirements.txt
 ├── .editorconfig
 ├── .gitignore
-├── .pre-commit-config.yaml    ⟸ pre-submit configs
+├── .pre-commit-config.yaml       ⟸ pre-submit configs
 ├── .github/
-│   ├── dependabot.yaml        ⟸ Github dependency update pipeline
+│   ├── dependabot.yaml           ⟸ Github dependency update pipeline
 │   └── workflows/
-│       ├── ci.yaml            ⟸ Github CI pipeline
-│       └── codeql.yaml        ⟸ Github security scans and code quality pipeline
+│       ├── ci.yaml               ⟸ Github CI pipeline
+│       └── codeql.yaml           ⟸ Github security scans and code quality pipeline
 ├── .vscode/
 │   ├── extensions.json
-│   └── settings.json          ⟸ VSCode configs
+│   └── settings.json             ⟸ VSCode configs
 ├── scripts/
-│   └── template.py            ⟸ Use template & directory for executable standalone scripts
+│   └── template.py               ⟸ Use template & directory for executable standalone scripts
 ├── src/
-│   └── <your_pkg>/            ⟸ change this directory's name (originally mycli)
+│   └── <your_pkg>/               ⟸ change this directory's name (originally mycli)
 │       ├── __init__.py
 │       ├── __main__.py
-│       ├── cli.py             ⟸ Main CLI app entry point (Main())
+│       ├── mycli.py              ⟸ Main CLI app entry point (Main())
 │       ├── py.typed
+│       ├── cli/
+│       │   ├── __init__.py
+│       │   ├── clibase.py        ⟸ Base/reusable CLI functionality
+│       │   └── randomcommand.py  ⟸ CLI commands implementation, to keep `mycli.py` clean
 │       ├── core/
 │       │   ├── __init__.py
-│       │   └── example.py     ⟸ Business logic goes in this directory
+│       │   └── example.py        ⟸ Business logic goes in this directory
 │       ├── resources/
 │       │   ├── __init__.py
-│       │   └── config.py      ⟸ Project resources/files go in this directory
+│       │   └── config.py         ⟸ Project resources/files go in this directory
 │       └── utils/
 │           ├── __init__.py
-│           ├── logging.py     ⟸ Useful modules go in this directory; Logging logic for example
-│           └── template.py    ⟸ Use template for starting regular modules
-├── tests/
-│   └── test_cli.py            ⟸ Unit-Testing goes in this directory
+│           ├── logging.py        ⟸ Useful modules go in this directory; Logging logic for example
+│           └── template.py       ⟸ Use template for starting regular modules
+├── tests/                        ⟸ Unit-Testing goes in this directory
+│   ├── mycli_test.py
+│   └── ...                       ⟸ Usually, a similar structure to `src/mycli/...`
 └── tests_integration/
-    └── test_installed_cli.py  ⟸ Integration testing goes in this directory
+    └── test_installed_cli.py     ⟸ Integration testing goes in this directory
 ```
 
 What each area is for:
