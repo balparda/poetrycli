@@ -18,6 +18,7 @@
 - **Python 3.12** or **Python 3.13** or **Python 3.14**
 - **Poetry** for packaging, dependency management, and `venv` workflow
 - **Typer** for CLI structure (commands, options, subcommands, help)
+- **Transcrypto** for CLI modules, logging, humanization, crypto, random, hash, serialization, etc
 - **Rich** for consistent console output and pretty logging
 - **Ruff** for formatting + linting
 - **MyPy** (and **Pyright/Pylance/typeguard**) for strict type checking
@@ -203,6 +204,7 @@ pip3 install <your_pkg>
 - **[python 3.12](https://python.org/)** - [documentation](https://docs.python.org/3.12/)
 - **[rich 14.2+](https://pypi.org/project/rich/)** - Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal - [documentation](https://rich.readthedocs.io/en/latest/)
 - **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
+- - **[transcrypto 2.0+](https://pypi.org/project/transcrypto/)** for CLI modules, logging, humanization, crypto, random, hash, serialization, etc
 - **[platformdirs 4.5+](https://pypi.org/project/platformdirs/)** - Determines appropriate platform-specific dirs
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
 - ***TODO:*** *add your main dependencies here too*
@@ -805,14 +807,12 @@ Keep tool versions aligned. Remember to check your diffs before submitting (espe
 This template does not generate `requirements.txt` automatically (Poetry uses `poetry.lock`). If you need a `requirements.txt` for Docker/legacy tooling, use Poetry’s export plugin (`poetry-plugin-export`) by simply running:
 
 ```sh
-poetry export --format requirements.txt --without-hashes --output requirements.txt
+make req  # or: poetry export --format requirements.txt --without-hashes --output requirements.txt
 ```
-
-Tip: If you want auto-export every time the lockfile changes, consider a plugin like `poetry-auto-export` (optional policy choice).
 
 ##### CI and docs
 
-Make sure to run `make docs` or even better `make ci`. Both will update the CLI markdown docs.
+Make sure to run `make docs` or even better `make ci`. Both will update the CLI markdown docs and `requirements.txt` automatically.
 
 ##### Git tag and commit
 
