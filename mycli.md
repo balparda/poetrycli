@@ -6,6 +6,8 @@
 ```text
 Usage: mycli [OPTIONS] COMMAND [ARGS]...                                                                                                                  
                                                                                                                                                            
+ MyCLI does amazing things!                                                                                                                                
+                                                                                                                                                           
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --version                                                        Show version and exit.                                                                 │
 │ --verbose             -v                INTEGER RANGE [0<=x<=3]  Verbosity (nothing=ERROR, -v=WARNING, -vv=INFO, -vvv=DEBUG).               │
