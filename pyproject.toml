@@ -34,7 +34,9 @@ keywords = [
 ]
 classifiers = [  # see: https://pypi.org/classifiers/
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.12",  # TODO: python VERSION; pick correct one
+  "Programming Language :: Python :: 3.12",  # TODO: python VERSION; pick correct ones
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Operating System :: OS Independent",
   "Topic :: Utilities"
   # TODO: ... add others ...
