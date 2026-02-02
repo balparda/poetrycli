@@ -964,7 +964,7 @@ In `src/<your_pkg>/resources/config.py`:
 APP_NAME = '<your_pkg>'  # TODO: change this to your app name
 ```
 
-Change `APP_NAME` to your app name so config ends up under the correct OS-specific directory.
+Change `APP_NAME` to your app name so config ends up under the correct OS-specific directory. Edit `Makefile` replacing occurrences of `mycli`.
 
 #### Pick a Python version (skip if 3.12 is good)
 
@@ -1298,6 +1298,8 @@ Update tests that assert version output (there is a version test).
 In `src/<your_pkg>/resources/config.py`: `APP_NAME = 'mycli'` → your app name
 
 This affects where the OS-native config directory lives.
+
+Go into `Makefile` and replace occurrences of `mycli`.
 
 ### 6: Review lint policy (Ruff)
 

@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2026 Daniel Balparda <balparda@github.com>
 # SPDX-License-Identifier: Apache-2.0
 
+# TODO: change `mycli` occurrences to the actual project name
+
 .PHONY: install fmt lint type test integration cov flakes precommit docs req ci
 
 install:
@@ -22,7 +24,7 @@ integration:
 	poetry run pytest -q tests_integration
 
 cov:
-	poetry run pytest --cov=src --cov-report=term-missing -q tests
+	poetry run pytest --typeguard-packages=mycli --cov=src --cov-report=term-missing -q tests
 
 flakes:
 	poetry run pytest --flake-finder --flake-runs=100 -q tests
