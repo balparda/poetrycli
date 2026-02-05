@@ -375,7 +375,26 @@ Rich can provide color output in logging and in CLI output. App:
 - Has `--no-color` / `--color` flag: if given will override the `NO_COLOR` environment variable
 - If there is no environment variable and no flag is given, default to having color
 
-To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/latest/markup.html).
+To control color see [Rich's markup conventions](https://rich.readthedocs.io/en/latest/markup.html). In summary, the basic 16 colors are:
+
+- `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
+- Bright variants: `bright_black` (gray), `bright_red`, `bright_green`, `bright_yellow`, `bright_blue`, `bright_magenta`, `bright_cyan`, `bright_white`
+
+Extended named colors (256-color palette) are as above, plus many more, including these useful ones:
+
+- `grey0` through `grey100` (grayscale)
+- `dark_red`, `light_red`, `dark_green`, `light_green`, `dark_blue`, `light_blue`, `dark_cyan`, `light_cyan`, `dark_magenta`, `light_magenta`
+- `orange1`, `orange3`, `orange4`, `purple`, `purple4`, `gold1`, `gold3`
+
+Styles you can combine with colors are: `bold`, `dim`, `italic`, `underline`, `blink`, `reverse`, `strike`, `overline`. Common usage patterns:
+
+- `[red]text[/]` - red text
+- `[bold red]text[/]` - bold red text
+- `[bold]text[/]` - just bold
+- `[#ff0000]text[/]` - hex color (RGB)
+- `[rgb(255,0,0)]text[/]` - RGB notation
+- `[on blue]text[/]` - blue **background**
+- `[red on white]text[/]` - red text on white **background**
 
 #### *Exit codes (TODO)*
 

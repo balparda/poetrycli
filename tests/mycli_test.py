@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from unittest import mock
 
+import click
 import pytest
-import typeguard
 import typer
 from click import testing as click_testing
 from transcrypto.utils import logging as cli_logging
@@ -32,10 +32,7 @@ def CallCLI(args: list[str]) -> click_testing.Result:
       click_testing.Result: CLI result.
 
   """
-  with typeguard.suppress_type_checks():  # <-- example of suppressing typeguard checks
-    # we suppress type checks here because CliRunner.invoke expects a click.Command,
-    # but we are passing a typer.Typer (which is a subclass of click.Command)
-    return testing.CliRunner().invoke(mycli.app, args)
+  return testing.CliRunner().invoke(mycli.app, args)
 
 
 def PrintedValue(console_mock: mock.Mock) -> object:
@@ -74,11 +71,10 @@ def test_version_flag() -> None:
 
 def test_version_flag_raises_exit() -> None:
   """Test version flag raises typer.Exit with exit code 0."""
-  ctx = mock.Mock(spec=typer.Context)
-  with typeguard.suppress_type_checks():
-    with pytest.raises(typer.Exit) as exc_info:
-      mycli.Main(ctx=ctx, version=True, verbose=0, color=None, foo=1000, bar='str default')
-    assert exc_info.value.exit_code == 0
+  ctx = mock.Mock(spec=click.Context)
+  with pytest.raises(typer.Exit) as exc_info:
+    mycli.Main(ctx=ctx, version=True, verbose=0, color=None, foo=1000, bar='str default')
+  assert exc_info.value.exit_code == 0
 
 
 def test_run_function() -> None:

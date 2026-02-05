@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import logging
 
+import click
 import typer
 from transcrypto.cli import clibase
 
@@ -21,7 +22,7 @@ mycli.app.add_typer(_random_app, name='random', help='Random utilities.')
 @clibase.CLIErrorGuard
 def RandomNum(  # documentation is help/epilog/args # noqa: D103
   *,
-  ctx: typer.Context,
+  ctx: click.Context,
   min_: int = typer.Option(0, '--min', help='Minimum value (inclusive).'),
   max_: int = typer.Option(100, '--max', help='Maximum value (inclusive).'),
 ) -> None:
@@ -36,7 +37,7 @@ def RandomNum(  # documentation is help/epilog/args # noqa: D103
 @clibase.CLIErrorGuard
 def RandomStr(  # documentation is help/epilog/args # noqa: D103
   *,
-  ctx: typer.Context,
+  ctx: click.Context,
   length: int = typer.Option(16, '--length', '-n', min=1, help='String length.'),
   alphabet: str | None = typer.Option(
     None,

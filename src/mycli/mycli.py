@@ -45,6 +45,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
+import click
 import typer
 from rich import console as rich_console
 from transcrypto.cli import clibase
@@ -75,7 +76,7 @@ def Run() -> None:
 @clibase.CLIErrorGuard
 def Main(  # documentation is help/epilog/args # noqa: D103
   *,
-  ctx: typer.Context,  # global context
+  ctx: click.Context,  # global context
   version: bool = typer.Option(False, '--version', help='Show version and exit.'),
   verbose: int = typer.Option(
     0,
@@ -120,14 +121,14 @@ def Main(  # documentation is help/epilog/args # noqa: D103
   epilog=('Example:\n\n\n\n$ poetry run mycli markdown > mycli.md\n\n<<saves CLI doc>>'),
 )
 @clibase.CLIErrorGuard
-def Markdown(*, ctx: typer.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+def Markdown(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
   config: MyCLIConfig = ctx.obj
   config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'))
 
 
 @app.command(help='Print the config file path.')  # create one per command
 @clibase.CLIErrorGuard
-def ConfigPath(*, ctx: typer.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+def ConfigPath(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
   config: MyCLIConfig = ctx.obj
   config.console.print(str(config_resources.GetConfigPath()))
 
@@ -135,7 +136,7 @@ def ConfigPath(*, ctx: typer.Context) -> None:  # documentation is help/epilog/a
 @app.command(help='Say hello.')  # create one per command
 @clibase.CLIErrorGuard
 def Hello(  # documentation is help/epilog/args # noqa: D103
-  *, ctx: typer.Context, name: str = typer.Argument('World')
+  *, ctx: click.Context, name: str = typer.Argument('World')
 ) -> None:
   logging.info('Saying hello to %s', name)
   config: MyCLIConfig = ctx.obj  # get application global config
