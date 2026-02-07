@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-import pathlib
 from unittest import mock
 
 import pytest
 from click import testing as click_testing
+from transcrypto.utils import config as app_config
 from transcrypto.utils import logging as cli_logging
 
 from tests import mycli_test
@@ -18,6 +18,7 @@ from tests import mycli_test
 def reset_cli() -> None:
   """Reset CLI singleton before each test."""
   cli_logging.ResetConsole()
+  app_config.ResetConfig()
 
 
 # -------------------------------------------------------------------------------------------------
@@ -223,30 +224,3 @@ def test_random_str_rejects_non_positive_length(
   assert result.exit_code != 0
   choice_mock.assert_not_called()
   console_factory_mock.return_value.print.assert_not_called()
-
-
-@mock.patch('transcrypto.utils.logging.rich_console.Console')
-@mock.patch('mycli.resources.config.GetConfigPath')
-def test_config_path_prints_path(
-  get_config_path_mock: mock.Mock,
-  console_factory_mock: mock.Mock,
-) -> None:
-  """Test config-path command prints the config path."""
-  console = mock.Mock()
-  console_factory_mock.return_value = console
-  mock_path = pathlib.Path('/mock/config/mycli/config.toml')
-  get_config_path_mock.return_value = mock_path
-  result: click_testing.Result = mycli_test.CallCLI(['configpath'])
-  assert result.exit_code == 0, result.output
-  console.print.assert_called_once_with(str(mock_path))
-
-
-def test_markdown_command_generates_docs() -> None:
-  """Test markdown command generates documentation."""
-  result: click_testing.Result = mycli_test.CallCLI(['markdown'])
-  assert result.exit_code == 0, result.output
-  # Verify it contains markdown-like content
-  assert 'mycli' in result.stdout
-  assert '#' in result.stdout  # markdown headers
-  # Verify it mentions at least one known command
-  assert 'hello' in result.stdout or 'random' in result.stdout

@@ -49,10 +49,10 @@ import click
 import typer
 from rich import console as rich_console
 from transcrypto.cli import clibase
+from transcrypto.utils import config as app_config
 from transcrypto.utils import logging as cli_logging
 
 from . import __version__
-from .resources import config as config_resources
 
 
 @dataclass(kw_only=True, slots=True, frozen=True)
@@ -109,7 +109,14 @@ def Main(  # documentation is help/epilog/args # noqa: D103
     soft_wrap=False,  # decide if you want soft wrapping of long lines
   )
   # create context with the arguments we received
-  ctx.obj = MyCLIConfig(console=console, verbose=verbose, color=color, foo=foo, bar=bar)
+  ctx.obj = MyCLIConfig(
+    console=console,
+    verbose=verbose,
+    color=color,
+    appconfig=app_config.InitConfig('mycli', 'mycli.bin'),  # TODO: change app & config name
+    foo=foo,
+    bar=bar,
+  )
   # even though this is a convenient place to print(), beware that this runs even when
   # a subcommand is invoked; so prefer logging.debug/info/warning/error instead of print();
   # for example, if you run `markdown` subcommand, this will still print and spoil the output
@@ -130,7 +137,7 @@ def Markdown(*, ctx: click.Context) -> None:  # documentation is help/epilog/arg
 @clibase.CLIErrorGuard
 def ConfigPath(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
   config: MyCLIConfig = ctx.obj
-  config.console.print(str(config_resources.GetConfigPath()))
+  config.console.print(str(config.appconfig.path))
 
 
 @app.command(help='Say hello.')  # create one per command

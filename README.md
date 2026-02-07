@@ -64,7 +64,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
     - [Global flags](#global-flags)
     - [CLI Commands Documentation](#cli-commands-documentation)
     - [*Configuration (TODO)*](#configuration-todo)
-      - [*Config file locations (TODO)*](#config-file-locations-todo)
+      - [Config file locations](#config-file-locations)
       - [*Configuration schema (TODO)*](#configuration-schema-todo)
       - [*Validate configuration (TODO)*](#validate-configuration-todo)
       - [*Environment variables (TODO)*](#environment-variables-todo)
@@ -139,7 +139,7 @@ The `poetrycli` repo is intentionally opinionated because it was built to help t
       - [CLI design (Typer)](#cli-design-typer)
       - [Rich logging + Console singleton (`transcrypto`)](#rich-logging--console-singleton-transcrypto)
       - [Separation of CLI and business logic](#separation-of-cli-and-business-logic)
-      - [Config path helper (`resources/config.py`)](#config-path-helper-resourcesconfigpy)
+      - [Config management (`transcrypto.util.config`)](#config-management-transcryptoutilconfig)
       - [Strict linting + formatting with Ruff (pyproject.toml)](#strict-linting--formatting-with-ruff-pyprojecttoml)
       - [Typing checks (MyPy + Pyright)](#typing-checks-mypy--pyright)
       - [Tests + coverage (`pytest`)](#tests--coverage-pytest)
@@ -204,8 +204,7 @@ pip3 install <your_pkg>
 - **[python 3.12](https://python.org/)** - [documentation](https://docs.python.org/3.12/)
 - **[rich 14.2+](https://pypi.org/project/rich/)** - Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal - [documentation](https://rich.readthedocs.io/en/latest/)
 - **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
-- - **[transcrypto 2.0+](https://pypi.org/project/transcrypto/)** for CLI modules, logging, humanization, crypto, random, hash, serialization, etc
-- **[platformdirs 4.5+](https://pypi.org/project/platformdirs/)** - Determines appropriate platform-specific dirs
+- **[transcrypto 2.1+](https://pypi.org/project/transcrypto/)** - CLI modules, logging, humanization, crypto, random, hash, serialization, config management, etc. - [documentation](https://github.com/balparda/transcrypto)
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
 - ***TODO:*** *add your main dependencies here too*
 
@@ -321,11 +320,16 @@ This software auto-generates docs for CLI apps:
 
 ### *Configuration (TODO)*
 
-#### *Config file locations (TODO)*
+#### Config file locations
 
-- *Linux: `~/.config/<project>/config.<json|yaml|toml>`*
-- *macOS: `~/Library/Application Support/<project>/config.<...>`*
-- *Windows: `%APPDATA%\<project>\config.<...>`*
+This template uses `transcrypto.util.config` for configuration management. Config files are stored in OS-native locations:
+
+- On MacOS: `/Users/[user]/Library/Application Support/[app_name]{/[version]}`
+- On Windows: `C:\\Users\\[user]\\AppData\\Local{\\[app_author]}\\[app_name]{\\[version]}`
+- On Linux: `/home/[user]/.config/[app_name]{/[version]}`
+- On Android: `/data/data/com.myApp/shared_prefs/[app_name]{/[version]}`
+
+***TODO: add specific config files info***
 
 #### *Configuration schema (TODO)*
 
@@ -506,9 +510,6 @@ Styles you can combine with colors are: `bold`, `dim`, `italic`, `underline`, `b
 │       ├── core/
 │       │   ├── __init__.py
 │       │   └── example.py        ⟸ Business logic goes in this directory
-│       ├── resources/
-│       │   ├── __init__.py
-│       │   └── config.py         ⟸ Project resources/files go in this directory
 │       └── utils/
 │           ├── __init__.py
 │           └── template.py       ⟸ Use template for starting regular modules
@@ -524,7 +525,6 @@ What each area is for:
 - `src/<your_pkg>/cli.py`: **Typer app** definition, top-level callback (**Main**), and all **commands/subcommands**.
 - `src/<your_pkg>/core/example.py`: **“Business logic”** layer. CLI commands call into here. This is the main testable logic layer.
 - `src/<your_pkg>/utils/template.py`: A template module showing a recommended docstring structure for **new modules**.
-- `src/<your_pkg>/resources/config.py`: **“Where is my config file?”** logic using platformdirs.
 - `tests/test_cli.py`: Comprehensive CLI **tests** using Typer’s CliRunner, pytest.mark.parametrize, and unittest.mock.patch.
 - `scripts/template.py`: A template for **“directly executable scripts”** (includes a shebang).
 
@@ -977,13 +977,16 @@ change GitHub URLs and others
 
 #### Update app name used for config paths
 
-In `src/<your_pkg>/resources/config.py`:
+The template uses `transcrypto.util.config` for configuration management. To set your app name, update it wherever you initialize configuration in your CLI:
 
 ```py
-APP_NAME = '<your_pkg>'  # TODO: change this to your app name
+from transcrypto.util import config as cfg
+
+# Initialize config with your app name
+config = cfg.Config(app_name='<your_pkg>', config_name='<config_file_name>')
 ```
 
-Change `APP_NAME` to your app name so config ends up under the correct OS-specific directory. Edit `Makefile` replacing occurrences of `mycli`.
+This ensures config files are stored in OS-specific directories. Also edit `Makefile` replacing occurrences of `mycli`.
 
 #### Pick a Python version (skip if 3.12 is good)
 
@@ -1120,18 +1123,24 @@ Commands call into `src/<your_pkg>/core/example.py`, which should contain your b
 - Business logic can be tested independently (and reused elsewhere)
 - Mocking business logic is cleaner
 
-#### Config path helper (`resources/config.py`)
+#### Config management (`transcrypto.util.config`)
 
-This is minimal and cross-platform.
+This template uses `transcrypto.util.config` for cross-platform configuration management. Basic usage:
 
-- `GetConfigDir()` uses `platformdirs.user_config_path(APP_NAME)`
-- `GetConfigPath()` returns `GetConfigDir() / "config.toml"`
+```py
+from transcrypto.util import config as app_config
 
-So your config location becomes OS-native:
+# Initialize config with your app name
+config = app_config.Config('mycli', 'myconfig.bin')
 
-- macOS: `~/Library/Application Support/<APP_NAME>/...`
-- Linux: `~/.config/<APP_NAME>/...`
-- Windows: user `AppData` equivalent
+config_dir = config.dir  # Path object to config directory
+config_path = config.path  # Path object to config file ('myconfig.bin')
+
+data = config.DeSerialize()  # loads default config object as a python object
+config.Serialize({'key': 'new_value'})  # saves python object to default config file
+```
+
+The `Serialize`/`DeSerialize` methods are powerful `transcrypto` primitives that allow for, for example, strong encryption of your configs.
 
 #### Strict linting + formatting with Ruff (pyproject.toml)
 
@@ -1314,11 +1323,17 @@ Update tests that assert version output (there is a version test).
 
 ### 5: Update config app name
 
-In `src/<your_pkg>/resources/config.py`: `APP_NAME = 'mycli'` → your app name
+The template uses `transcrypto.util.config` for configuration. Update the `app_name` parameter wherever you initialize config in your CLI code:
 
-This affects where the OS-native config directory lives.
+```py
+from transcrypto.util import config as cfg
 
-Go into `Makefile` and replace occurrences of `mycli`.
+config = cfg.Config('mycli', 'config.bin')  # ← change 'mycli' to your app name
+```
+
+This affects where the OS-native config directory lives (e.g., `~/.config/<app_name>/` on Linux).
+
+Also go into `Makefile` and replace occurrences of `mycli`.
 
 ### 6: Review lint policy (Ruff)
 
