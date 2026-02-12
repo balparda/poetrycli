@@ -15,7 +15,7 @@ lint:
 	poetry run ruff check .
 
 type:
-	poetry run mypy src
+	poetry run mypy src tests tests_integration
 
 test:
 	poetry run pytest -q tests

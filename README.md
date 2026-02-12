@@ -760,7 +760,7 @@ poetry run ruff format --check .
 #### Type checking
 
 ```sh
-make type  # equivalent to: poetry run mypy src
+make type  # equivalent to: poetry run mypy src tests tests_integration
 ```
 
 (Pyright is primarily for editor-time; MyPy is what CI enforces.)
@@ -1222,7 +1222,7 @@ File `.github/workflows/ci.yaml` runs on pushes and PRs:
 - `poetry install`
 - `ruff check .`
 - `ruff format --check .`
-- `mypy src`
+- `mypy src tests tests_integration`
 - `pytest --cov=src --cov-report=term-missing`
 
 CI is the “source of truth” that the template remains clean.

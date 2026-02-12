@@ -50,10 +50,10 @@ license-files = [ "LICENSE" ]
 
 dependencies = [
 
-  "typer>=0.21",   # if this changes, also change: [tool.poetry.dependencies]  # TODO: if you keep transcrypto, you can remove this line
+  "typer>=0.23",   # if this changes, also change: [tool.poetry.dependencies]  # TODO: if you keep transcrypto, you can remove this line
   "rich>=14.3,!=14.3.2",  # 14.3.2 hangs GitHub CI pipeline  # TODO: if you keep transcrypto, you can remove this line
-  "platformdirs>=4.5",  # TODO: if you keep transcrypto, you can remove this line
-  "transcrypto>=2.1.1",
+  "platformdirs>=4.6",  # TODO: if you keep transcrypto, you can remove this line
+  "transcrypto>=2.2",
 
   # best place for project dependencies, if possible
   # development-only dependencies go in the [tool.poetry.group.dev.dependencies] section below
@@ -103,7 +103,7 @@ include = [
 # prefer to add dependencies inside the [project.dependencies] section
 
 python = "^3.12"  # if version changes, remember to change README.md  # TODO: python VERSION; pick correct one
-typer = { version = "^0.21", extras = ["all"] }  # TODO: if you keep transcrypto, you can remove this line
+typer = { version = "^0.23", extras = ["all"] }  # TODO: if you keep transcrypto, you can remove this line
 
 [tool.poetry.group.dev.dependencies]
 
@@ -187,6 +187,7 @@ ignore = [
 
   "E731",     # Do not assign a `lambda` expression, use a `def`
   "FBT001",   # Boolean-typed positional argument in function definition
+  "FBT002",   # Boolean default positional argument in function definition
   "FBT003",   # allows boolean positional value in function call
   "PLR0913",  # Too many arguments in function definition (N > 5)
   "PLR0917",  # Too many positional arguments (N/5)
@@ -222,11 +223,12 @@ preview = true  # if you want new features being previewed
 [tool.mypy]
 
 python_version = "3.12"  # TODO: python VERSION; pick correct one
-mypy_path = [ "src" ]
+mypy_path = [ "src", "typings" ]
+
+warn_unused_ignores = false  # VSCode always has more to say, so this is important
 
 warn_return_any = true
 warn_unused_configs = true
-warn_unused_ignores = true
 disallow_untyped_defs = true
 no_implicit_optional = true
 warn_redundant_casts = true
