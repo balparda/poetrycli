@@ -731,13 +731,35 @@ This will save a file `output1.html` to the project directory with the timings f
 
 #### Integration / e2e tests
 
-There are integration tests that build a pip wheel and test the CLI.
+Integration tests validate packaging and the installed console script by:
+
+- building a wheel from the repository
+- installing that wheel into a fresh temporary virtualenv
+- running the installed console script(s) to verify behavior (for example, `--version` and basic commands)
+
+The canonical integration test is [tests_integration/test_installed_cli.py](tests_integration/test_installed_cli.py). It uses helpers from `transcrypto.utils.config` to simplify the workflow:
+
+- `EnsureAndInstallWheel(repo_root, tmp_path, expected_version, app_names)` — builds the wheel and installs it into a temporary venv, returning the venv python and `bin` directory.
+- `EnsureConsoleScriptsPrintExpectedVersion(vpy, bin_dir, expected_version, app_names)` — verifies the console scripts exist and that `--version` prints the expected version.
+- `CallGetConfigDirFromVEnv(vpy, app_name)` — calls the installed CLI inside the venv to find its data/config directory (used for cleanup/isolation).
+
+Tests in this suite are marked with `pytest.mark.integration`.
+
+Run the integration tests with:
 
 ```sh
+# Run only integration-marked tests (recommended)
+poetry run pytest -m integration -q
+
+# Or run the full integration target (equivalent)
 make integration
 ```
 
-They are slower, but are a part of the CL pipeline.
+Notes:
+
+- These tests are slower and require `poetry`/venv support on the host system.
+- Keep the `_APP_NAME` / `_APP_NAMES` constants in the test aligned with your package and console-script names.
+- Use `--no-color` in assertions to avoid ANSI escape sequences when checking output.
 
 #### *Golden tests for CLI output (TODO)*
 
@@ -1333,7 +1355,7 @@ config = cfg.Config('mycli', 'config.bin')  # ← change 'mycli' to your app nam
 
 This affects where the OS-native config directory lives (e.g., `~/.config/<app_name>/` on Linux).
 
-Also go into `Makefile` and replace occurrences of `mycli`.
+Also go into `Makefile` and replace occurrences of `mycli`. Same thing with the integration tests, go into `tests_integration/test_installed_cli.py` and change the app and CLI name there.
 
 ### 6: Review lint policy (Ruff)
 
@@ -1357,10 +1379,11 @@ make ci  # runs complete CI pipeline
 
 Expected:
 
+- Pytest: green
+- Integration: green
 - Ruff: no diffs after `ruff format .`
 - Ruff lint: clean
 - MyPy: clean
-- Pytest: green
 - Coverage: acceptable (note: init/template files are omitted by design)  ￼
 
 ### 8: First release workflow (suggested)
@@ -1398,6 +1421,13 @@ Once your project is real:
 - Tighten or relax Ruff ignores based on your team’s preferences
 
 ### 12: Done: Start building your project
+
+*Congratulations! You should have a working project.* Next steps suggestions:
+
+- Edit this `README.md` with information specific to your project.
+- Start building your CLI logic, replacing the toy one provided here.
+- Add unit tests for core logic and CLI wiring (use Typer's `CliRunner`).
+- Add and maintain integration tests that validate packaging and the installed console script.
 
 ---
 
