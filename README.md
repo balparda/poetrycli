@@ -489,6 +489,7 @@ Styles you can combine with colors are: `bold`, `dim`, `italic`, `underline`, `b
 ├── .gitignore
 ├── .pre-commit-config.yaml       ⟸ pre-submit configs
 ├── .github/
+│   ├── copilot-instructions.md   ⟸ GitHub Copilot project-specific instructions
 │   ├── dependabot.yaml           ⟸ Github dependency update pipeline
 │   └── workflows/
 │       ├── ci.yaml               ⟸ Github CI pipeline
@@ -651,6 +652,7 @@ Recommended VSCode extensions:
 - markdownlint (`davidanson.vscode-markdownlint`)
 - Markdown All in One (`yzhang.markdown-all-in-one`) - helps maintain this `README.md` table of contents
 - Markdown Preview Enhanced (`shd101wyy.markdown-preview-enhanced`, optional)
+- GitHub Copilot (`github.copilot`) - AI assistant; reads `.github/copilot-instructions.md` for project-specific coding conventions (indentation, naming, workflow)
 
 ### *Build (TODO)*
 

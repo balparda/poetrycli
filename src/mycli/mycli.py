@@ -133,14 +133,14 @@ def Markdown(*, ctx: click.Context) -> None:  # documentation is help/epilog/arg
   config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'))
 
 
-@app.command(help='Print the config file path.')  # create one per command
+@app.command('configpath', help='Print the config file path.')  # create one per command
 @clibase.CLIErrorGuard
 def ConfigPath(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
   config: MyCLIConfig = ctx.obj
   config.console.print(str(config.appconfig.path))
 
 
-@app.command(help='Say hello.')  # create one per command
+@app.command('hello', help='Say hello.')  # create one per command
 @clibase.CLIErrorGuard
 def Hello(  # documentation is help/epilog/args # noqa: D103
   *, ctx: click.Context, name: str = typer.Argument('World')
