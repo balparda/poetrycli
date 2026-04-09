@@ -10,7 +10,7 @@ import string
 from transcrypto.utils import saferandom
 
 
-def RandomNum(min_: int, max_: int, /) -> int:
+def RandomNum(min_: int, max_: int) -> int:
   """Generate a random integer.
 
   Args:
@@ -24,7 +24,7 @@ def RandomNum(min_: int, max_: int, /) -> int:
   return saferandom.RandInt(min_, max_)
 
 
-def RandomStr(length: int, alphabet: str | None, /) -> str:
+def RandomStr(length: int, alphabet: str | None) -> str:
   """Generate a random string.
 
   Args:

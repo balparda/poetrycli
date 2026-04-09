@@ -40,7 +40,7 @@ def test_installed_cli_smoke(tmp_path: pathlib.Path) -> None:
   _hello_call(cli_paths, data_dir)  # TODO: change
 
 
-def _hello_call(cli_paths: dict[str, pathlib.Path], data_dir: pathlib.Path, /) -> None:
+def _hello_call(cli_paths: dict[str, pathlib.Path], data_dir: pathlib.Path) -> None:
   try:  # type: ignore[unreachable]
     # basic command smoke test; use --no-color to avoid ANSI codes in asserts.
     r = base.Run([str(cli_paths['mycli']), '--no-color', 'hello', 'Ada'])  # TODO: change
