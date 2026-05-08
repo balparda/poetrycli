@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: Copyright 2026 Daniel Balparda <balparda@github.com>
+
+## CODEOWNERS - owners, PR reviewers
+
+## TODO: if you want every PR to require reviews setup in github, settings->branches->add ruleset
+
+* @balparda @BellaKeri
