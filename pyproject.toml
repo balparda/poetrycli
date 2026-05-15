@@ -104,14 +104,14 @@ python = "^3.12"  # if version changes, remember to change README.md  # TODO: py
 [tool.poetry.group.dev.dependencies]
 
 # basic, all projects should have
-ruff = "^0.15.10"
 mypy = "^2.1"
+pyinstrument = "^5.1"
+pyright = "^1.1"
 pytest = "^9.0"
 pytest-cov = "^7.1"
 pytest-flakefinder = "^1.1"
-pyright = "^1.1"
-pre-commit = "^4.5"
-pyinstrument = "^5.1"
+pre-commit = "^4.6"
+ruff = "^0.15"
 typeguard = "^4.5"
 
 # project-specific dev-only
