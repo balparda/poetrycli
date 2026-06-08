@@ -204,7 +204,7 @@ pip3 install <your_pkg>
 - **[python 3.12](https://python.org/)** - [documentation](https://docs.python.org/3.12/)
 - **[rich 14.2+](https://pypi.org/project/rich/)** - Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal - [documentation](https://rich.readthedocs.io/en/latest/)
 - **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
-- **[transcrypto 2.1+](https://pypi.org/project/transcrypto/)** - CLI modules, logging, humanization, crypto, random, hash, serialization, config management, etc. - [documentation](https://github.com/balparda/transcrypto)
+- **[transcrypto 2.6.2+](https://pypi.org/project/transcrypto/)** - CLI modules, logging, humanization, crypto, random, hash, serialization, config management, etc. - [documentation](https://github.com/balparda/transcrypto)
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
 - ***TODO:*** *add your main dependencies here too*
 
@@ -608,13 +608,19 @@ cd poetrycli
 From the repository root:
 
 ```sh
-poetry env use python3.12  # creates the .venv with the correct Python version - TODO: pick correct Python version
-poetry sync                # sync env to project's poetry.lock file
+make init                  # initializes Poetry environment with in-project .venv and Python 3.12
 poetry env info            # no-op: just to check that environment looks good
 poetry check               # no-op: make sure all pyproject.toml fields are being used correctly
 
 poetry run mycli --help    # simple test if everything loaded OK
 make ci                    # should pass OK on clean repo
+```
+
+Alternatively, if you already have `.venv` set up locally:
+
+```sh
+poetry env use python3.12  # creates the .venv with the correct Python version
+poetry sync                # sync env to project's poetry.lock file
 ```
 
 To activate and use the environment do:
@@ -733,19 +739,15 @@ This will save a file `output1.html` to the project directory with the timings f
 
 #### Integration / e2e tests
 
-Integration tests validate packaging and the installed console script by:
+Integration tests validate the installed console script by:
 
-- building a wheel from the repository
-- installing that wheel into a fresh temporary virtualenv
-- running the installed console script(s) to verify behavior (for example, `--version` and basic commands)
+- finding the console script in `PATH`
+- running it with basic commands (for example, `--version` and sample operations)
+- verifying expected output and behavior
 
-The canonical integration test is [tests_integration/test_installed_cli.py](tests_integration/test_installed_cli.py). It uses helpers from `transcrypto.utils.config` to simplify the workflow:
+The canonical integration test is [tests_integration/test_installed_cli.py](tests_integration/test_installed_cli.py). The test uses `base.VersionCallCheck()` and `base.Run()` from `transcrypto.utils.base` to invoke the installed CLI.
 
-- `EnsureAndInstallWheel(repo_root, tmp_path, expected_version, app_names)` — builds the wheel and installs it into a temporary venv, returning the venv python and `bin` directory.
-- `EnsureConsoleScriptsPrintExpectedVersion(vpy, bin_dir, expected_version, app_names)` — verifies the console scripts exist and that `--version` prints the expected version.
-- `CallGetConfigDirFromVEnv(vpy, app_name)` — calls the installed CLI inside the venv to find its data/config directory (used for cleanup/isolation).
-
-Tests in this suite are marked with `pytest.mark.integration`.
+Tests in this suite are marked with `pytest.mark.integration` and `pytest.mark.slow`.
 
 Run the integration tests with:
 
@@ -759,9 +761,9 @@ make integration
 
 Notes:
 
-- These tests are slower and require `poetry`/venv support on the host system.
-- Keep the `_APP_NAME` / `_APP_NAMES` constants in the test aligned with your package and console-script names.
+- These tests assume the console script is installed and available in `PATH` (which happens after `poetry install`).
 - Use `--no-color` in assertions to avoid ANSI escape sequences when checking output.
+- These tests are marked `slow` as they add overhead beyond unit tests.
 
 #### *Golden tests for CLI output (TODO)*
 
