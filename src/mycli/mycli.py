@@ -130,7 +130,7 @@ def Main(  # documentation is help/epilog/args # noqa: D103
 @clibase.CLIErrorGuard
 def Markdown(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
   config: MyCLIConfig = ctx.obj
-  config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'))
+  config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'), soft_wrap=True)
 
 
 @app.command('configpath', help='Print the config file path.')  # create one per command
