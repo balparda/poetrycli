@@ -33,7 +33,7 @@ Initial public template release.
 
 - Added
   - **Poetry + Python 3.12** base project (`pyproject.toml`) with local `.venv` workflow.
-  - **Typer** CLI with:
+  - **Typer** (with integrated Click) for CLI with:
     - Global constructor callback (`Main`) and `--version` option.
     - Example commands: `hello`, `config-path`.
     - Example subcommand group: `random num`, `random str`.

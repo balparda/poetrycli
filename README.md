@@ -203,7 +203,7 @@ pip3 install <your_pkg>
 
 - **[python 3.12](https://python.org/)** - [documentation](https://docs.python.org/3.12/)
 - **[rich 14.2+](https://pypi.org/project/rich/)** - Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal - [documentation](https://rich.readthedocs.io/en/latest/)
-- **[typer 0.21+](https://pypi.org/project/typer/)** - CLI parser - [documentation](https://typer.tiangolo.com/)
+- **[typer 0.21+](https://pypi.org/project/typer/)** - CLI framework (includes Click internally) - [documentation](https://typer.tiangolo.com/)
 - **[transcrypto 2.6.2+](https://pypi.org/project/transcrypto/)** - CLI modules, logging, humanization, crypto, random, hash, serialization, config management, etc. - [documentation](https://github.com/balparda/transcrypto)
 - **[poetrycli](https://github.com/balparda/poetrycli)** - CLI app templates and utils
 - ***TODO:*** *add your main dependencies here too*

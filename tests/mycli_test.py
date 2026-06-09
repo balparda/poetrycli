@@ -7,10 +7,10 @@ from __future__ import annotations
 import pathlib
 from unittest import mock
 
-import click
 import pytest
 import typer
-from click import testing as click_testing
+import typer._click.core
+import typer.testing
 from transcrypto.utils import config as app_config
 from transcrypto.utils import logging as cli_logging
 from typer import testing
@@ -25,7 +25,7 @@ def reset_cli() -> None:
   app_config.ResetConfig()
 
 
-def CallCLI(args: list[str]) -> click_testing.Result:
+def CallCLI(args: list[str]) -> typer.testing.Result:
   """Call the CLI with args.
 
   Args:
@@ -67,14 +67,14 @@ def AssertRandomStrPrintedValue(printed: object, expected_prefix: str) -> None:
 
 def test_version_flag() -> None:
   """Test."""
-  result: click_testing.Result = CallCLI(['--version'])
+  result: typer.testing.Result = CallCLI(['--version'])
   assert result.exit_code == 0
   assert result.stdout.strip() == '0.1.0'
 
 
 def test_version_flag_raises_exit() -> None:
   """Test version flag raises typer.Exit with exit code 0."""
-  ctx = mock.Mock(spec=click.Context)
+  ctx = mock.Mock(spec=typer._click.core.Context)
   with pytest.raises(typer.Exit) as exc_info:
     mycli.Main(ctx=ctx, version=True, verbose=0, color=None, foo=1000, bar='str default')
   assert exc_info.value.exit_code == 0
@@ -89,21 +89,21 @@ def test_run_function() -> None:
 
 def test_version_flag_ignores_extra_args() -> None:
   """Test."""
-  result: click_testing.Result = CallCLI(['--version', 'hello'])
+  result: typer.testing.Result = CallCLI(['--version', 'hello'])
   assert result.exit_code == 0
   assert result.stdout.strip() == '0.1.0'
 
 
 def test_hello_default_name() -> None:
   """Test."""
-  result: click_testing.Result = CallCLI(['hello'])
+  result: typer.testing.Result = CallCLI(['hello'])
   assert result.exit_code == 0
   assert 'Hello, World!' in result.stdout
 
 
 def test_hello_custom_name() -> None:
   """Test."""
-  result: click_testing.Result = CallCLI(['hello', 'Ada'])
+  result: typer.testing.Result = CallCLI(['hello', 'Ada'])
   assert result.exit_code == 0
   assert 'Hello, Ada!' in result.stdout
 
@@ -120,7 +120,7 @@ def test_config_path_prints_path(
   console = mock.Mock()
   console_factory_mock.return_value = console
   get_config_path_mock.return_value = pathlib.Path('/mock/config/mycli/config')
-  result: click_testing.Result = CallCLI(['configpath'])
+  result: typer.testing.Result = CallCLI(['configpath'])
   assert result.exit_code == 0, result.output
   console.print.assert_called_once_with('/mock/config/mycli/config/mycli.bin')
   mkdir_mock.assert_called_once_with(parents=True, exist_ok=True)
@@ -128,7 +128,7 @@ def test_config_path_prints_path(
 
 def test_markdown_command_generates_docs() -> None:
   """Test markdown command generates documentation."""
-  result: click_testing.Result = CallCLI(['markdown'])
+  result: typer.testing.Result = CallCLI(['markdown'])
   assert result.exit_code == 0, result.output
   # Verify it contains markdown-like content
   assert 'mycli' in result.stdout

@@ -45,8 +45,8 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
-import click
 import typer
+import typer._click.core
 from rich import console as rich_console
 from transcrypto.cli import clibase
 from transcrypto.utils import config as app_config
@@ -76,7 +76,7 @@ def Run() -> None:
 @clibase.CLIErrorGuard
 def Main(  # documentation is help/epilog/args # noqa: D103
   *,
-  ctx: click.Context,  # global context
+  ctx: typer._click.core.Context,  # global context
   version: bool = typer.Option(False, '--version', help='Show version and exit.'),
   verbose: int = typer.Option(
     0,
@@ -128,14 +128,18 @@ def Main(  # documentation is help/epilog/args # noqa: D103
   epilog=('Example:\n\n\n\n$ poetry run mycli markdown > mycli.md\n\n<<saves CLI doc>>'),
 )
 @clibase.CLIErrorGuard
-def Markdown(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+def Markdown(  # noqa: D103
+  *, ctx: typer._click.core.Context
+) -> None:  # documentation is help/epilog/args
   config: MyCLIConfig = ctx.obj
   config.console.print(clibase.GenerateTyperHelpMarkdown(app, prog_name='mycli'), soft_wrap=True)
 
 
 @app.command('configpath', help='Print the config file path.')  # create one per command
 @clibase.CLIErrorGuard
-def ConfigPath(*, ctx: click.Context) -> None:  # documentation is help/epilog/args # noqa: D103
+def ConfigPath(  # noqa: D103
+  *, ctx: typer._click.core.Context
+) -> None:  # documentation is help/epilog/args
   config: MyCLIConfig = ctx.obj
   config.console.print(str(config.appconfig.path))
 
@@ -143,7 +147,7 @@ def ConfigPath(*, ctx: click.Context) -> None:  # documentation is help/epilog/a
 @app.command('hello', help='Say hello.')  # create one per command
 @clibase.CLIErrorGuard
 def Hello(  # documentation is help/epilog/args # noqa: D103
-  *, ctx: click.Context, name: str = typer.Argument('World')
+  *, ctx: typer._click.core.Context, name: str = typer.Argument('World')
 ) -> None:
   logging.info('Saying hello to %s', name)
   config: MyCLIConfig = ctx.obj  # get application global config

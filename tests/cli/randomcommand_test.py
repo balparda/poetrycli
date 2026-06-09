@@ -7,7 +7,7 @@ from __future__ import annotations
 from unittest import mock
 
 import pytest
-from click import testing as click_testing
+import typer.testing
 from transcrypto.utils import config as app_config
 from transcrypto.utils import logging as cli_logging
 
@@ -63,7 +63,7 @@ def test_random_num_prints_expected_integer(
   console_factory_mock.return_value = console
   randbelow_mock.return_value = randbelow_return
   # Act
-  result: click_testing.Result = mycli_test.CallCLI(
+  result: typer.testing.Result = mycli_test.CallCLI(
     ['random', 'num', '--min', str(min_), '--max', str(max_)],
   )
   # Assert
@@ -99,7 +99,7 @@ def test_random_num_rejects_invalid_range(
   - In this failure path, randbelow should never be called and we should not print anything.
   """
   console_factory_mock.return_value = mock.Mock()
-  result: click_testing.Result = mycli_test.CallCLI(
+  result: typer.testing.Result = mycli_test.CallCLI(
     ['random', 'num', '--min', str(min_), '--max', str(max_)],
   )
   assert result.exit_code != 0
@@ -142,7 +142,7 @@ def test_random_str_default_alphabet_prints_expected(
   console_factory_mock.return_value = console
   # Each call to secrets.choice returns the next item from choices
   choice_mock.side_effect = choices
-  result: click_testing.Result = mycli_test.CallCLI(['random', 'str', '--length', str(length)])
+  result: typer.testing.Result = mycli_test.CallCLI(['random', 'str', '--length', str(length)])
   assert result.exit_code == 0, result.output
   # We should call choice exactly 'length' times
   assert choice_mock.call_count == length
@@ -185,7 +185,7 @@ def test_random_str_custom_alphabet_is_used(
   console = mock.Mock()
   console_factory_mock.return_value = console
   choice_mock.side_effect = choices
-  result: click_testing.Result = mycli_test.CallCLI(
+  result: typer.testing.Result = mycli_test.CallCLI(
     ['random', 'str', '--alphabet', alphabet, '--length', str(length)],
   )
   assert result.exit_code == 0, result.output
@@ -220,7 +220,7 @@ def test_random_str_rejects_non_positive_length(
   - Therefore: secrets.choice should not be called, and no console printing should happen.
   """
   console_factory_mock.return_value = mock.Mock()
-  result: click_testing.Result = mycli_test.CallCLI(['random', 'str', '--length', bad_length])
+  result: typer.testing.Result = mycli_test.CallCLI(['random', 'str', '--length', bad_length])
   assert result.exit_code != 0
   choice_mock.assert_not_called()
   console_factory_mock.return_value.print.assert_not_called()

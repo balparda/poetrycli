@@ -50,14 +50,7 @@ license-files = [ "LICENSE" ]
 
 dependencies = [
 
-  "transcrypto>=2.6.2",
-
-  # TODO: pinned version because 0.26 is a mess, inline click and tests give a message that
-  #    can only be fixed by disabling typeguard; probably have to fix clibase/transcrypto up
-  "typer==0.25.1",   # if this changes, also change: [tool.poetry.dependencies]
-  "click==8.3.3",  # TODO: >=8.4 is waiting for typer type-stubs compatibility (probably >0.25.1)
-
-  "rich>=15.0",
+  "transcrypto>=2.7",
 
   # best place for project dependencies, if possible
   # development-only dependencies go in the [tool.poetry.group.dev.dependencies] section below
@@ -107,7 +100,6 @@ include = [
 # prefer to add dependencies inside the [project.dependencies] section
 
 python = "^3.12"  # if version changes, remember to change README.md
-typer = { version = "0.25.1", extras = ["all"] }
 
 [tool.poetry.group.dev.dependencies]
 
