@@ -104,14 +104,14 @@ python = "^3.12"  # if version changes, remember to change README.md
 [tool.poetry.group.dev.dependencies]
 
 # basic, all projects should have
-mypy = "^2.1"
+mypy = "^2.3"
 pyinstrument = "^5.1"
 pyright = "^1.1"
-pytest = "^9.0"
+pytest = "^9.1"
 pytest-cov = "^7.1"
 pytest-flakefinder = "^1.1"
 pre-commit = "^4.6"
-ruff = "^0.15.16"
+ruff = "^0.15.21"
 typeguard = "^4.5"
 
 # project-specific dev-only
@@ -228,6 +228,7 @@ preview = true  # if you want new features being previewed
   "PT018",    # Assertion should be broken down into multiple parts
   "SLF001",   # Private member accessed
   "PLR2004",  # Magic value used in comparison, consider replacing <V> with a constant variable
+  "RUF076",   # Avoid using `autouse=True` in `pytest.fixture` decorators
 ]
 
 ####################################################################################################
